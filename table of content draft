@@ -1,0 +1,28 @@
+-Introduction
+	-general overview of the solution of schorodinger eq -> exp operator
+	-outline what we did
+	-organization of the book, brief description of the chapters
+
+-Trotter Suzuki Approximation (5pag)
+	-why we have to deal with exponential operators
+	-the advantages of the trotter approximation
+	-fractal decomposition
+	(-some examples)
+
+-Implementations:(5pag)
+	-A simple case 1d paticle
+	-The actual implementation
+
+-Description of the program (8pag)
+	
+	-parallelization  
+	-kernels
+	-API
+	-Python & MATLAB
+
+-Benchmarks (2 pag)
+
+-BEC with impurities
+	-static impurity
+	-implementation
+	-results
