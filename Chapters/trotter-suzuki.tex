@@ -1,0 +1,51 @@
+\chapter{Trotter-Suzuki Decomposition}
+
+Since the pubblication of the Trotter product formula [], a great effort has been carried out by mathematicians, to study possible approximations of the exponential operator. In particular, Masuo Suzuki has studied on the higher-order approximation throughtout his carrier, leading to major results in this subject.
+
+The Trotter product formula for the exponential of two not necessarily commuting linear operators reads:
+\begin{equation} \label{eq:trotter}
+e^{(A+B)} = \lim_{n\rightarrow\infty} (e^{(\frac{A}{n})} e^{(\frac{B}{n})})^n
+\end{equation}
+The Trotter-Kato theorem [] defines the properties that the operators $A$ and $B$ must satisfy for the equation~\eqref{eq:trotter} to hold. In the simplest case, $A$ and $B$ can be seen as arbitrary $nxn$ real or complex matrices, and the \eqref{eq:trotter} reduces to the Lie product formula []. The usefulness of this formula lies on the following fact. The exponential of a generic operator is usually difficult to calculate, but whenever this operator can be expressed as a sum of two operators $A$ and $B$, whose exponentiation is known, the \eqref{eq:trotter} provides a method to estimate $e^{(A+B)}$. However, for the practical purpose, it is not usefull since it requires to take the limit for $n$ that goes to infinity. On a practical side one can calculate the right side of the equation only for a finite value of $n$, leading to an approximation of the original problem. At this point, it becomes important to study which can be an efficient approximation of the exponential, and how to estimate the error.
+
+But first of all, let us discuss as to why we have to treat the exponential operator and why we need an approximant in order to treat it. The exponential operator appears in varios fields of physics as a formal solution of the differential equation of the form
+\begin{equation} \label{eq:general}
+\dfrac{\partial}{\partial t} x(t) = M x(t)
+\end{equation}
+where $x$ is a function or a vector and $M$ is an operator or a Matrix. Typical examples are the Schr\"odinger equation
+\begin{equation}
+i\hbar\dfrac{\partial}{\partial t} \psi(t) = H\psi(t)
+\end{equation}
+the Hamiltonian equation
+\begin{equation}
+\dfrac{d}{d t} 
+\begin{pmatrix}
+\vec{p}(t) \\ \vec{q}(t)
+\end{pmatrix}
+= H
+\begin{pmatrix}
+\vec{p}(t) \\ \vec{q}(t)
+\end{pmatrix}
+\end{equation}
+and the diffusion equation with a potential
+\begin{equation}
+\dfrac{d}{dt}P(x,t) = \emph{L} P(x,t)
+\end{equation}
+A solution of \eqref{eq:general} is given in the form of the Green's function as 
+\begin{equation}
+x(t) = G(t;0)x(0) = e^{tM}x(0)
+\end{equation}
+although it is only a formal solution; obtaining the Green's function $G(t;0) = e^{tM}$ is as difficult as solving the equation \eqref{eq:general} in any other way. Another important incident of the exponential operator is the partition function in equilibrium quantum statistical physics:
+\begin{equation}
+Z = Tr(e^{- \beta H})
+\end{equation}
+
+The exponential operator, however, is hard to compute in many interesting cases. The most straightforward way of computing the exponential operator $e^{xM}$ is to diagonalize the operator $M$. In quantum forward way of computing the exponential operator e xM is to diagonalize the operator M. In quantum many-body problems, however, the basis of the diagonalized representation is often nontrivial, because we are typically interested in the Hamiltonian with two terms or more that are mutually non-commutative; for example, the Ising model in a transverse field,
+\begin{equation} \label{eq:ising}
+H = -\sum_{\langle i,j \rangle} J_{ij} \sigma_i^z \sigma_j^z - \triangle\sum_i \sigma_i^x
+\end{equation}
+and the Hubbard model,
+\begin{equation} \label{eq:Hubbard}
+H = -t \sum_{\sigma = \uparrow ,\downarrow} \sum_{\langle i,j \rangle} (c_{i\sigma}^\dagger c_{j\sigma} + c_{j\sigma}^\dagger c_{i\sigma}) + U\sum_i n_{i\uparrow} n_{i\downarrow}
+\end{equation}
+In the first example \eqref{eq:ising}, the quantization axis of the first term is the spin z axis, while that of the second term is the spin x axis. The two terms are therefore mutually non-commutative. In the second example \eqref{eq:Hubbard}, the first term is diagonalizable in the momentum space, whereas the second term is diagonalizable in the coordinate space. In both examples, each term is easily diagonalizable. Since one quantization axis is different from the other, the diagonalization of the sum of the terms becomes suddenly difficult.
