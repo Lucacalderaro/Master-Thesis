@@ -6,9 +6,11 @@ The Trotter product formula for the exponential of two not necessarily commuting
 \begin{equation} \label{eq:trotter}
 e^{(A+B)} = \lim_{n\rightarrow\infty} (e^{(\frac{A}{n})} e^{(\frac{B}{n})})^n
 \end{equation}
-The Trotter-Kato theorem [] defines the properties that the operators $A$ and $B$ must satisfy for the equation~\eqref{eq:trotter} to hold. In the simplest case, $A$ and $B$ can be seen as arbitrary $nxn$ real or complex matrices, and the \eqref{eq:trotter} reduces to the Lie product formula []. The usefulness of this formula lies on the following fact. The exponential of a generic operator is usually difficult to calculate, but whenever this operator can be expressed as a sum of two operators $A$ and $B$, whose exponentiation is known, the \eqref{eq:trotter} provides a method to estimate $e^{(A+B)}$. However, for the practical purpose, it is not usefull since it requires to take the limit for $n$ that goes to infinity. On a practical side one can calculate the right side of the equation only for a finite value of $n$, leading to an approximation of the original problem. At this point, it becomes important to study which can be an efficient approximation of the exponential, and how to estimate the error.
+The Trotter-Kato theorem~\cite{TrotterKatoTheorem} defines the properties that the operators $A$ and $B$ must satisfy for the equation~\eqref{eq:trotter} to hold. In the simplest case, $A$ and $B$ can be seen as arbitrary $n\times n$ real or complex matrices, and the \eqref{eq:trotter} reduces to the Lie product formula~\cite{LieSophus}. The usefulness of this formula lies on the following fact. The exponential of a generic operator is usually difficult to calculate, but whenever this operator can be expressed as a sum of two operators $A$ and $B$, whose exponentiation is known, the \eqref{eq:trotter} provides a method to estimate $e^{(A+B)}$. However, for the practical purpose, it is not usefull since it requires to take the limit for $n$ that goes to infinity. On a practical side one can calculate the right side of the equation only for a finite value of $n$, leading to an approximation of the original problem. At this point, it becomes important to study which can be an efficient approximation of the exponential, and how to estimate the error.
 
-But first of all, let us discuss as to why we have to treat the exponential operator and why we need an approximant in order to treat it. The exponential operator appears in varios fields of physics as a formal solution of the differential equation of the form
+\section{why exponential operator}
+
+First of all, let us discuss as to why we have to treat the exponential operator and why we need an approximant in order to treat it. The exponential operator appears in varios fields of physics as a formal solution of the differential equation of the form
 \begin{equation} \label{eq:general}
 \dfrac{\partial}{\partial t} x(t) = M x(t)
 \end{equation}
@@ -40,7 +42,7 @@ although it is only a formal solution; obtaining the Green's function $G(t;0) = 
 Z = Tr(e^{- \beta H})
 \end{equation}
 
-The exponential operator, however, is hard to compute in many interesting cases. The most straightforward way of computing the exponential operator $e^{xM}$ is to diagonalize the operator $M$. In quantum forward way of computing the exponential operator e xM is to diagonalize the operator M. In quantum many-body problems, however, the basis of the diagonalized representation is often nontrivial, because we are typically interested in the Hamiltonian with two terms or more that are mutually non-commutative; for example, the Ising model in a transverse field,
+The exponential operator, however, is hard to compute in many interesting cases. The most straightforward way of computing the exponential operator $e^{xM}$ is to diagonalize the operator $M$. In quantum many-body problems, however, the basis of the diagonalized representation is often nontrivial, because we are typically interested in the Hamiltonian with two terms or more that are mutually non-commutative; for example, the Ising model in a transverse field,
 \begin{equation} \label{eq:ising}
 H = -\sum_{\langle i,j \rangle} J_{ij} \sigma_i^z \sigma_j^z - \triangle\sum_i \sigma_i^x
 \end{equation}
@@ -49,3 +51,80 @@ and the Hubbard model,
 H = -t \sum_{\sigma = \uparrow ,\downarrow} \sum_{\langle i,j \rangle} (c_{i\sigma}^\dagger c_{j\sigma} + c_{j\sigma}^\dagger c_{i\sigma}) + U\sum_i n_{i\uparrow} n_{i\downarrow}
 \end{equation}
 In the first example \eqref{eq:ising}, the quantization axis of the first term is the spin z axis, while that of the second term is the spin x axis. The two terms are therefore mutually non-commutative. In the second example \eqref{eq:Hubbard}, the first term is diagonalizable in the momentum space, whereas the second term is diagonalizable in the coordinate space. In both examples, each term is easily diagonalizable. Since one quantization axis is different from the other, the diagonalization of the sum of the terms becomes suddenly difficult.
+
+\section{Suzuki approximation}
+
+As we have seen in the previous section, the exponentiation plays a major role in most fields of physics. For this reason it is necessary to find good approximation to be able to treat it. The Suzuki-Trotter approximation offer a way to deal with such operator. 
+
+The simplest form of the Suzuki-Trotter approximation comes in the form:
+\begin{equation} \label{eq:approxexp}
+e^{x(A+B)} = e^{xA}e^{xB} + O(x^2) 
+\end{equation}
+where $A$ and $B$ are arbitrary general operator with some commutation relation $[A,B] \neq 0$, and $x$ is a parameter. This equation is also known as the trotter decomposition. To demonstrate that this is actually a first-order aproximant, let us rearrange the formula in this form:
+\begin{equation}
+e^{xB}e^{xA} = e^{x(A+B) + O(x^2)}
+\end{equation}
+We can calculate the form of the correction terms that appears in the exponent of the right-hand side, exploiting a Taylor expansion of both sides of the equation ~\eqref{eq:approxexp}.
+\begin{align}
+e^{x(A+B)} &= I + x(A+B) + \frac{1}{2} x^2 (A+B)^2 + O(x^3) \\
+& = I + x(A+B) + \frac{1}{2} x^2 (A^2 + AB + BA + B^2) + O(x^3) 
+\end{align}
+for the left side, and
+\begin{align} \label{eq:taylorexp}
+e^{xA}e^{xB} &= (I + xA + \frac{1}{2} x^2 A^2 + O(x^3)) (I + xB + \frac{1}{2} x^2 B^2 + O(x^3))\\
+& = I + x(A+B) + \frac{1}{2} x^2 (A^2 + 2AB + B^2) + O(x^3) 
+\end{align}
+for the right side. The two equations differ from the fact that in~\eqref{eq:taylorexp} the operator $A$ always comes on the left of the operator $B$, which let us write the form of the correction term:
+\begin{equation}
+e^{xA} e^{xB} = e^{x(A+B) + \frac{1}{2} x^2 [A,B] + O(x^3)}
+\end{equation}
+Now, dividing the parameter $x$ into $n$ slices, we get
+\begin{equation}
+\left(e^{\frac{x}{n}A} e^{\frac{x}{n}B} \right)^n = \left[ e^{\frac{x}{n}(A + B) + \frac{1}{2}(\frac{x}{n})^2 [A,B] + O((\frac{x}{n})^3)} \right]^n = e^{x(A+B) + \frac{1}{2}(\frac{x^2}{n}) [A,B] + O((\frac{x^3}{n^2}))} 
+\end{equation}
+and taking the limit $n \rightarrow \infty$ the correction term vanishes. We refer to the integer n as the Trotter number.
+Having said that, it is interesting to compare this approximation with the one probably more frequently used, namely
+\begin{equation} \label{eq:roughapprox}
+e^{x(A+B)} = I + x(A+B) + O(x^2)
+\end{equation}
+When dealing with Hermitian Hamiltonian, the Trotter-Suzuki approximation has a remarkable advantage over the~\eqref{eq:roughapprox}. Indeed, in that scenario the evolution operator is a unitary operator; the same cannot be said for the right-hand side of the \label{eq:roughapprox}. Contrary, it is easy to see that the Trotter-Suzuki preserve this property. As a consequence, the norm of the wave function is preserved. However, this first-order approximation could not be enough as regarding . For this reason it is interesting to further develop the approximation, looking for higher order approximant.
+
+\section{Fractal Decomposition}
+
+To go beyond the simple approximation presented in the previous section, we can introduce a recursive approach, called Fractal Decomposition. Bearing in mind that we want to preserve the nice property of unitarity, we are looking for an approximation of exponentials product.
+
+The easiest improvement of the Trotter formula~\ref{eq:approxexp} is the simmetrization
+\begin{equation}
+S_2(x) \equiv e^{\frac{x}{2}A} e^{xB} e^{\frac{x}{2}A} = e^{f(x)}
+\end{equation}
+The symmetrized approximant has the property
+\begin{equation}
+S_2(-x) S_2(x) = e^{-\frac{x}{2}A} e^{-xB} e^{-\frac{x}{2}A} e^{\frac{x}{2}A} e^{xB} e^{\frac{x}{2}A} = I
+\end{equation}
+which prove that $f(x)$ does not have even-order term in $x$. Consequently, $S_2$ has the form
+\begin{equation}
+S_2 = e^{x(A+B) + x^3R_3 + x^5R_5 + \cdots}
+\end{equation}
+therefore this is a second-order approximant.
+
+A fourth-order approximant can be constructed from the $S_2$ considering the product
+\begin{align} \label{eq:fourth-order}
+S_4(x) &= S_2(sx) S_2((1-2s)x) S_2(sx) \\
+&= e^{\frac{s}{2}xA} e^{sxB} e^{\frac{1-s}{2}xA} e^{(1-2s)xB} e^{\frac{1-s}{2}xA} e^{sxB} e^{\frac{s}{2}xA}
+\end{align}
+where s is an arbitrary real number for the moment. The expression~\eqref{eq:fourth-order} is followed by
+\begin{align} \label{eq:fourth-order2}
+S_4(x) &= S_2(sx) S_2((1-2s)x) S_2(sx) \\
+&= e^{sx(A+B) + s^3x^3R_3 + O(x^5)} e^{(1-2s)x(A+B) + (1-2s)^3x^3R_3 + O(x^5)} e^{sx(A+B) + s^3x^3R_3 + O(x^5)} \\
+&= e^{x(A+B)+(2s^3+(1-2s)^3)R_3+O(x)}
+\end{align}
+where the third line of~\eqref{eq:fourth-order2} follow by the Taylor expansion of the second. Also in this case the property $S(-x)S(x) = I$ is valid, thus, as before, we conclude that the even-order correction in the exponent of~\eqref{eq:fourth-order2} vanish, and the parameter $s$ must satisfy
+\begin{equation}
+2s^3 + (1-2s)^3 = 0
+\end{equation}
+Solving the equation we obtain $s = \frac{1}{2-\sqrt[3]{2}}$
+
+
+Even if it is a very simple approximation, it has some advantages over other more frequently used approximation, such as
+
+indeed, in the scenario of Hermitian Hamiltonian, the Trotter-Suzuki approximation preserves the unitarity of the operator, contrary to the one in~\eqref{eq:roughapprox}. This property is of fondamental importance when studying closed quantum systems, where the norm of the wave function is constant. The perturbational approximant~\eqref{eq:roughapprox}, on the other hand, does not conserve the norm of the wave function; in fact, the norm typically increases monotonically as the time passes.

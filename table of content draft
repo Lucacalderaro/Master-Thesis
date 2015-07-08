@@ -7,7 +7,7 @@
 	-why we have to deal with exponential operators
 	-the advantages of the trotter approximation
 	-fractal decomposition
-	(-some examples)
+	-example: spin precession
 
 -Implementations:(5pag)
 	-A simple case 1d paticle
