@@ -26,3 +26,5 @@
 	-static impurity
 	-implementation
 	-results
+	-tests with harmonic and soft core potential
+	-range of parameters

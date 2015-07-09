@@ -114,7 +114,7 @@ S_4(x) &= S_2(sx) S_2((1-2s)x) S_2(sx) \\
 \end{align}
 where s is an arbitrary real number for the moment. The expression~\eqref{eq:fourth-order} is followed by
 \begin{align} \label{eq:fourth-order2}
-S_4(x) &= S_2(sx) S_2((1-2s)x) S_2(sx) \\
+S(x) &= S_2(sx) S_2((1-2s)x) S_2(sx)	 \\
 &= e^{sx(A+B) + s^3x^3R_3 + O(x^5)} e^{(1-2s)x(A+B) + (1-2s)^3x^3R_3 + O(x^5)} e^{sx(A+B) + s^3x^3R_3 + O(x^5)} \\
 &= e^{x(A+B)+(2s^3+(1-2s)^3)R_3+O(x)}
 \end{align}
@@ -122,9 +122,60 @@ where the third line of~\eqref{eq:fourth-order2} follow by the Taylor expansion 
 \begin{equation}
 2s^3 + (1-2s)^3 = 0
 \end{equation}
-Solving the equation we obtain $s = \frac{1}{2-\sqrt[3]{2}}$
+Solving the equation we obtain $s = \frac{1}{2-\sqrt[3]{2}} = 1.351207\ldots$~. Suppose now that $S(x)$ is an approximant of the time-evolution operator, from the time $t=0$ to $t=x$. The right term $S_2(sx)$ on the right-hand side of equation~\eqref{eq:fourth-order} evolves the system from $t=0$ to $t=sx>x$; the middle-term $S_2((1-2s)x)$ approximates the time evolution from $t=sx$ to $t=sx + (1-2s)x = (1-s)x$; finally the last term $S_2(sx)$ approximates the evolution from $t=(1-s)x$ to $t=x$. Representing the evolution as in Fig., it is evident that the evolution has a part that goes to the "past". In some cases this can be problematic, for instance when studying the diffusion from a delta peak as initial state. Indeed, in this case there is no past of the initial delta peak state. 
 
+However, this problem can be easely solved by introducing another fourth-order approximant. Following the same idea, we consider
+\begin{equation}
+S_4(x) = S_2(s_2x)^2 S_2((1-4s_2)x) S_2(s_2x)^2	
+\end{equation}
+where $s_2$ is the parameter that solve the equation
+\begin{equation}
+4s_2^3 + (1-4s_2)^3 = 0, or s_2 = \frac{1}{4 - \sqrt[3]{4}}=0.414490\ldots
+\end{equation}
+Similarly to the $S(x)$ we represent $S_2(x)$ as in Fig. . Note that this time the evolution remains between the initial and final time.
 
-Even if it is a very simple approximation, it has some advantages over other more frequently used approximation, such as
+Now we can move to the sixth-order approximant, using $S_4(x)$ and following the same structure.
+\begin{equation}
+S_6(x) = S_4(s_4x)^2 S_4((1-4s_4)x) S_4(s_4x)^2
+\end{equation}
+obtaining
+\begin{equation}
+4s_4^5 + (1-4s_4)^5 = 0, or s_4 = \frac{1}{4-\sqrt[5]{4}} = 0.373065\ldots
+\end{equation}
+We can continue this recursive procedure, ending up with the exact time evolution. It is interesting to note that this recursive procedure creates a fractal pattern composed by back-and-forth evolution, reproducing the exact time evolution.
 
-indeed, in the scenario of Hermitian Hamiltonian, the Trotter-Suzuki approximation preserves the unitarity of the operator, contrary to the one in~\eqref{eq:roughapprox}. This property is of fondamental importance when studying closed quantum systems, where the norm of the wave function is constant. The perturbational approximant~\eqref{eq:roughapprox}, on the other hand, does not conserve the norm of the wave function; in fact, the norm typically increases monotonically as the time passes.
+\section{Example: spin precession}
+
+It is worth to give a brief and simple example to show some remarkable properties of the Trotter-Suzuki decomposition. In this section we compare it with the first order perturbation, using a simple example of quantum dynamics, namely the spin precession.
+
+Consider as Hamiltonian of the system
+\begin{equation}
+H = \sigma_z + \Gamma \sigma_x
+\end{equation}
+and as initial state the up-spin state
+\begin{equation}
+\psi(0) = 
+\begin{pmatrix}
+1 \\ 0
+\end{pmatrix}
+\end{equation}
+The evolution is simple to calculate analitically: the spin precesses around the axis of the magnetic field $\vec{H} = (\Gamma, 0, 1)$ with the period
+\begin{equation}
+T = \frac{\pi}{\sqrt{1+\Gamma^2}}.
+\end{equation}
+However, we here use the Trotter approximant
+\begin{equation}
+e^{-\frac{i}{\hbar}H \delta t} = e^{-\frac{i}{\hbar} \sigma_z \delta t} e^{-\frac{i}{\hbar} \Gamma \sigma_x \delta t}
+\end{equation}
+and the perturbational approximant
+\begin{equation}
+e^{-\frac{i}{\hbar}H \delta t} = I - \frac{i}{\hbar}(\sigma_z + \Gamma\sigma_x) \delta t
+\end{equation}
+Due to the approximations used, the energy expectation $\langle H \rangle$ is not constant troughout the evolution Fig. ; as it is in the exact solution. However, as regard the Trotter approximation, the error in the energy expectation oscillates periodically, and never increases beyond the oscillation amplitude. This behavior is consistent with the property of the approximation: due to the unitarity, the state periodically comes back to the initial state with a good accuracy, producing this oscillation in the energy.
+
+In contrast, the error in the energy monotonically grows in the case of the perturbational approximant, as is shown in Fig. . This comes from the fact that the norm of the wave vector increases by the factor
+\begin{equation}
+\Vert 1 - \frac{i}{\hbar} H \Delta t H \Vert \simeq 1 + \Delta t \Vert H \Vert > 1.
+\end{equation}
+
+This simple example shows how the unitarity of the Trotter approximant improves the quality of the simulation, compared to the perturbation approximant.
