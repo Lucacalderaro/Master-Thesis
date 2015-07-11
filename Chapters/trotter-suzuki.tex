@@ -2,21 +2,21 @@
 
 Since the pubblication of the Trotter product formula~\cite{Trotter1959}, a great effort has been carried out by mathematicians, to study possible approximations of the exponential operator. In particular, Masuo Suzuki has studied on the higher-order approximation throughtout his carrier, leading to major results in this subject~\cite{Suzuki1985, Suzuki2000}.
 
-The Trotter product formula for the exponential of two not necessarily commuting linear operators reads:
+The Trotter product formula for the exponential of two not necessarily commuting linear operators reads
 \begin{equation} \label{eq:trotter}
-e^{(A+B)} = \lim_{n\rightarrow\infty} (e^{(\frac{A}{n})} e^{(\frac{B}{n})})^n
+e^{(A+B)} = \lim_{n\rightarrow\infty} (e^{(\frac{A}{n})} e^{(\frac{B}{n})})^n.
 \end{equation}
-The Trotter-Kato theorem~\cite{TrotterKatoTheorem} defines the properties that the operators $A$ and $B$ must satisfy for the equation~\eqref{eq:trotter} to hold. In the simplest case, $A$ and $B$ can be seen as arbitrary $n\times n$ real or complex matrices, and the \eqref{eq:trotter} reduces to the Lie product formula~\cite{LieSophus}. The usefulness of this formula lies on the following fact. The exponential of a generic operator is usually difficult to calculate, but whenever this operator can be expressed as a sum of two operators $A$ and $B$, whose exponentiation is known, the \eqref{eq:trotter} provides a method to estimate $e^{(A+B)}$. However, for the practical purpose, it is not usefull since it requires to take the limit for $n$ that goes to infinity. On a practical side one can calculate the right side of the equation only for a finite value of $n$, leading to an approximation of the original problem. At this point, it becomes important to study which can be an efficient approximation of the exponential, and how to estimate the error.
+The Trotter-Kato theorem~\cite{TrotterKatoTheorem} defines the properties that the operators $A$ and $B$ must satisfy for the equation~\eqref{eq:trotter} to hold. In the simplest case, $A$ and $B$ can be seen as arbitrary $n\times n$ real or complex matrices, and the \eqref{eq:trotter} reduces to the Lie product formula~\cite{LieSophus}. The usefulness of this formula lies on the following fact. The exponential of a generic operator is usually difficult to calculate, but whenever this operator can be expressed as a sum of two operators $A$ and $B$, whose exponentiation is known, the \eqref{eq:trotter} provides a method to estimate $e^{(A+B)}$. However, for the practical purpose, this formula is not appropriate since it requires to take the limit for $n$ that goes to infinity. On a practical side, one can calculate the right side of the equation only for a finite value of $n$, leading to an approximation of the original problem. At this point, it becomes important to study which can be an efficient approximation of the exponential, and how to estimate the error.
 
-\section{why exponential operator}
+\section{Exponential operator in physics}
 
 First of all, let us discuss as to why we have to treat the exponential operator and why we need an approximant in order to treat it. The exponential operator appears in varios fields of physics as a formal solution of the differential equation of the form
 \begin{equation} \label{eq:general}
-\dfrac{\partial}{\partial t} x(t) = M x(t)
+\dfrac{\partial}{\partial t} x(t) = M x(t),
 \end{equation}
 where $x$ is a function or a vector and $M$ is an operator or a Matrix. Typical examples are the Schr\"odinger equation
 \begin{equation}
-i\hbar\dfrac{\partial}{\partial t} \psi(t) = H\psi(t)
+i\hbar\dfrac{\partial}{\partial t} \psi(t) = H\psi(t),
 \end{equation}
 the Hamiltonian equation
 \begin{equation}
@@ -27,22 +27,22 @@ the Hamiltonian equation
 = H
 \begin{pmatrix}
 \vec{p}(t) \\ \vec{q}(t)
-\end{pmatrix}
+\end{pmatrix},
 \end{equation}
 and the diffusion equation with a potential
 \begin{equation}
-\dfrac{d}{dt}P(x,t) = \emph{L} P(x,t)
+\dfrac{d}{dt}P(x,t) = \emph{L} P(x,t).
 \end{equation}
-A solution of \eqref{eq:general} is given in the form of the Green's function as 
+A formal solution of \eqref{eq:general} is given in the form of the Green's function as 
 \begin{equation}
-x(t) = G(t;0)x(0) = e^{tM}x(0)
+x(t) = G(t;0)x(0) = e^{tM}x(0).
 \end{equation}
-although it is only a formal solution; obtaining the Green's function $G(t;0) = e^{tM}$ is as difficult as solving the equation \eqref{eq:general} in any other way. Another important incident of the exponential operator is the partition function in equilibrium quantum statistical physics:
+However, obtaining the Green's function $G(t;0) = e^{tM}$ is as difficult as solving the equation \eqref{eq:general} in any other way. Another important incident of the exponential operator is the partition function in equilibrium quantum statistical physics:
 \begin{equation}
-Z = Tr(e^{- \beta H})
+Z = Tr(e^{- \beta H}).
 \end{equation}
 
-The exponential operator, however, is hard to compute in many interesting cases. The most straightforward way of computing the exponential operator $e^{xM}$ is to diagonalize the operator $M$. In quantum many-body problems, however, the basis of the diagonalized representation is often nontrivial, because we are typically interested in the Hamiltonian with two terms or more that are mutually non-commutative; for example, the Ising model in a transverse field,
+The exponential operator, however, is hard to compute in many interesting cases. The computation of the exponential operator $e^{xM}$ becomes straightforward when a basis that diagonalize the operator $M$ can be found. In quantum many-body problems, however, the basis of the diagonalized representation is often nontrivial, because we are typically interested in the Hamiltonian with two terms or more that are mutually non-commutative; for example, the Ising model in a transverse field,
 \begin{equation} \label{eq:ising}
 H = -\sum_{\langle i,j \rangle} J_{ij} \sigma_i^z \sigma_j^z - \triangle\sum_i \sigma_i^x
 \end{equation}
@@ -52,130 +52,156 @@ H = -t \sum_{\sigma = \uparrow ,\downarrow} \sum_{\langle i,j \rangle} (c_{i\sig
 \end{equation}
 In the first example \eqref{eq:ising}, the quantization axis of the first term is the spin z axis, while that of the second term is the spin x axis. The two terms are therefore mutually non-commutative. In the second example \eqref{eq:Hubbard}, the first term is diagonalizable in the momentum space, whereas the second term is diagonalizable in the coordinate space. In both examples, each term is easily diagonalizable. Since one quantization axis is different from the other, the diagonalization of the sum of the terms becomes suddenly difficult.
 
-\section{Suzuki approximation}
+\section{Exponential product approximation}
 
-As we have seen in the previous section, the exponentiation plays a major role in most fields of physics. For this reason it is necessary to find good approximation to be able to treat it. The Suzuki-Trotter approximation offer a way to deal with such operator. 
+As we have seen in the previous section, the exponentiation plays a major role in most fields of physics. For this reason it is necessary to find good approximation to be able to treat it. The Trotter-Suzuki approximation offer a way to deal with such operator. 
 
-The simplest form of the Suzuki-Trotter approximation comes in the form:
+The simplest form of the Trotter-Suzuki approximation comes in the form:
 \begin{equation} \label{eq:approxexp}
-e^{x(A+B)} = e^{xA}e^{xB} + O(x^2) 
+e^{x(A+B)} = e^{xA}e^{xB} + O(x^2), 
 \end{equation}
-where $A$ and $B$ are arbitrary general operator with some commutation relation $[A,B] \neq 0$, and $x$ is a parameter. This equation is also known as the trotter decomposition. To demonstrate that this is actually a first-order aproximant, let us rearrange the formula in this form:
+where $A$ and $B$ are arbitrary general operator with some commutation relation $[A,B] \neq 0$, and $x$ is a parameter. This equation is also known as the trotter decomposition. To demonstrate that this is actually a first-order aproximant, let us rearrange the formula in to following form:
 \begin{equation}
-e^{xB}e^{xA} = e^{x(A+B) + O(x^2)}
+e^{xB}e^{xA} = e^{x(A+B) + O(x^2)}.
 \end{equation}
-We can calculate the form of the correction terms that appears in the exponent of the right-hand side, exploiting a Taylor expansion of both sides of the equation ~\eqref{eq:approxexp}.
+We can calculate the form of the correction terms that appears in the exponent of the right-hand side by exploiting a Taylor expansion of both sides of the equation ~\eqref{eq:approxexp}.
+\begin{subequations} \label{eq:taylor-left}
 \begin{align}
 e^{x(A+B)} &= I + x(A+B) + \frac{1}{2} x^2 (A+B)^2 + O(x^3) \\
 & = I + x(A+B) + \frac{1}{2} x^2 (A^2 + AB + BA + B^2) + O(x^3) 
 \end{align}
+\end{subequations}
 for the left side, and
-\begin{align} \label{eq:taylorexp}
+\begin{subequations}  \label{eq:taylor-right}
+\begin{align}
 e^{xA}e^{xB} &= (I + xA + \frac{1}{2} x^2 A^2 + O(x^3)) (I + xB + \frac{1}{2} x^2 B^2 + O(x^3))\\
-& = I + x(A+B) + \frac{1}{2} x^2 (A^2 + 2AB + B^2) + O(x^3) 
+& = I + x(A+B) + \frac{1}{2} x^2 (A^2 + 2AB + B^2) + O(x^3)  
 \end{align}
-for the right side. The two equations differ from the fact that in~\eqref{eq:taylorexp} the operator $A$ always comes on the left of the operator $B$, which let us write the form of the correction term:
+\end{subequations}
+for the right side. The two equations~\eqref{eq:taylor-left} and~\eqref{eq:taylor-right} differ from the fact that, in the latter, the operator $A$ always comes on the left of the operator $B$, which let us write the form of the correction term:
 \begin{equation}
 e^{xA} e^{xB} = e^{x(A+B) + \frac{1}{2} x^2 [A,B] + O(x^3)}
 \end{equation}
-Now, dividing the parameter $x$ into $n$ slices, we get
+Therefore, dividing the parameter $x$ into $n$ slices, we get
 \begin{equation}
 \left(e^{\frac{x}{n}A} e^{\frac{x}{n}B} \right)^n = \left[ e^{\frac{x}{n}(A + B) + \frac{1}{2}(\frac{x}{n})^2 [A,B] + O((\frac{x}{n})^3)} \right]^n = e^{x(A+B) + \frac{1}{2}(\frac{x^2}{n}) [A,B] + O((\frac{x^3}{n^2}))} 
 \end{equation}
-and taking the limit $n \rightarrow \infty$ the correction term vanishes. We refer to the integer n as the Trotter number.
-Having said that, it is interesting to compare this approximation with the one probably more frequently used, namely
+and taking the limit $n \rightarrow \infty$ the correction term vanishes, recovering the exponential operator.
+
+It is interesting to compare this approach with the one more frequently used perturbational approximation, namely
 \begin{equation} \label{eq:roughapprox}
-e^{x(A+B)} = I + x(A+B) + O(x^2)
+e^{x(A+B)} = I + x(A+B) + O(x^2).
 \end{equation}
-When dealing with Hermitian Hamiltonian, the Trotter-Suzuki approximation has a remarkable advantage over the~\eqref{eq:roughapprox}. Indeed, in that scenario the evolution operator is a unitary operator; the same cannot be said for the right-hand side of the \label{eq:roughapprox}. Contrary, it is easy to see that the Trotter-Suzuki preserve this property. As a consequence, the norm of the wave function is preserved. However, this first-order approximation could not be enough as regarding . For this reason it is interesting to further develop the approximation, looking for higher order approximant.
+When dealing with Hermitian Hamiltonian $H=A+B$, the Trotter-Suzuki approximation has a remarkable advantage over the~\eqref{eq:roughapprox}. Indeed, in that scenario, the evolution operator is a unitary operator; the same is not true for the right-hand side of the \label{eq:roughapprox}. Contrary, it is easy to see that the Trotter-Suzuki preserve this property. As a consequence, the norm of the wave function is preserved, resulting in a better accuracy of the evolution. However, a first-order approximation could not be enough  to achive the high precision. For these reasons it is interesting to further develop the approximation, looking for higher order approximant.
 
 \section{Fractal Decomposition}
 
-To go beyond the simple approximation presented in the previous section, we can introduce a recursive approach, called Fractal Decomposition. Bearing in mind that we want to preserve the nice property of unitarity, we are looking for an approximation of exponentials product.
+To go beyond the simple approximation presented in the previous section, we can introduce a recursive approach, called Fractal Decomposition. Bearing in mind that we want to preserve the unitarity of the approximant, we are looking for an approximation of exponentials product.
 
-The easiest improvement of the Trotter formula~\ref{eq:approxexp} is the simmetrization
-\begin{equation}
-S_2(x) \equiv e^{\frac{x}{2}A} e^{xB} e^{\frac{x}{2}A} = e^{f(x)}
+The easiest improvement of the Trotter formula~\eqref{eq:approxexp} is the simmetrization
+\begin{equation} 
+S_2(x) \equiv e^{\frac{x}{2}A} e^{xB} e^{\frac{x}{2}A} = e^{f(x)}.
 \end{equation}
 The symmetrized approximant has the property
 \begin{equation}
-S_2(-x) S_2(x) = e^{-\frac{x}{2}A} e^{-xB} e^{-\frac{x}{2}A} e^{\frac{x}{2}A} e^{xB} e^{\frac{x}{2}A} = I
+S_2(-x) S_2(x) = e^{-\frac{x}{2}A} e^{-xB} e^{-\frac{x}{2}A} e^{\frac{x}{2}A} e^{xB} e^{\frac{x}{2}A} = I,
 \end{equation}
-which prove that $f(x)$ does not have even-order term in $x$. Consequently, $S_2$ has the form
-\begin{equation}
-S_2 = e^{x(A+B) + x^3R_3 + x^5R_5 + \cdots}
+which prove that $f(x)$ does not have even-order term in $x$. Consequently, $S_2$ is a second-order approximant, with the following form
+\begin{equation} \label{eq:S2-form}
+S_2 = e^{x(A+B) + x^3R_3 + x^5R_5 + \cdots},
 \end{equation}
-therefore this is a second-order approximant.
+where $R_i$ are suitable operators.
 
 A fourth-order approximant can be constructed from the $S_2$ considering the product
-\begin{align} \label{eq:fourth-order}
+\begin{subequations} \label{eq:fourth-order}
+\begin{align} \label{eq:fourth-order.a}
 S_4(x) &= S_2(sx) S_2((1-2s)x) S_2(sx) \\
-&= e^{\frac{s}{2}xA} e^{sxB} e^{\frac{1-s}{2}xA} e^{(1-2s)xB} e^{\frac{1-s}{2}xA} e^{sxB} e^{\frac{s}{2}xA}
+&= e^{\frac{s}{2}xA} e^{sxB} e^{\frac{1-s}{2}xA} e^{(1-2s)xB} e^{\frac{1-s}{2}xA} e^{sxB} e^{\frac{s}{2}xA},
 \end{align}
-where s is an arbitrary real number for the moment. The expression~\eqref{eq:fourth-order} is followed by
-\begin{align} \label{eq:fourth-order2}
+\end{subequations}
+where s is an arbitrary real number. Using the~\eqref{eq:S2-form} the expression~\eqref{eq:fourth-order} becomes
+\begin{subequations} \label{eq:fourth-order2}
+\begin{align} 
 S(x) &= S_2(sx) S_2((1-2s)x) S_2(sx)	 \\
 &= e^{sx(A+B) + s^3x^3R_3 + O(x^5)} e^{(1-2s)x(A+B) + (1-2s)^3x^3R_3 + O(x^5)} e^{sx(A+B) + s^3x^3R_3 + O(x^5)} \\
-&= e^{x(A+B)+(2s^3+(1-2s)^3)R_3+O(x)}
+&= e^{x(A+B)+(2s^3+(1-2s)^3)R_3+O(x^5)} \label{eq:fourth-order2.3}
 \end{align}
-where the third line of~\eqref{eq:fourth-order2} follow by the Taylor expansion of the second. Also in this case the property $S(-x)S(x) = I$ is valid, thus, as before, we conclude that the even-order correction in the exponent of~\eqref{eq:fourth-order2} vanish, and the parameter $s$ must satisfy
-\begin{equation}
-2s^3 + (1-2s)^3 = 0
+\end{subequations}
+The property $S(-x)S(x) = I$ holds also in this case, so we can conclude that the even-order correction in the exponent of~\eqref{eq:fourth-order2} vanish, and the parameter $s$ must satisfy
+\begin{equation} \label{eq:s}
+2s^3 + (1-2s)^3 = 0.
 \end{equation}
-Solving the equation we obtain $s = \frac{1}{2-\sqrt[3]{2}} = 1.351207\ldots$~. Suppose now that $S(x)$ is an approximant of the time-evolution operator, from the time $t=0$ to $t=x$. The right term $S_2(sx)$ on the right-hand side of equation~\eqref{eq:fourth-order} evolves the system from $t=0$ to $t=sx>x$; the middle-term $S_2((1-2s)x)$ approximates the time evolution from $t=sx$ to $t=sx + (1-2s)x = (1-s)x$; finally the last term $S_2(sx)$ approximates the evolution from $t=(1-s)x$ to $t=x$. Representing the evolution as in Fig., it is evident that the evolution has a part that goes to the "past". In some cases this can be problematic, for instance when studying the diffusion from a delta peak as initial state. Indeed, in this case there is no past of the initial delta peak state. 
+Solving the equation~\eqref{eq:s} we obtain $s = \frac{1}{2-\sqrt[3]{2}} = 1.351207\ldots$~. Suppose now that $S(x)$ is an approximant of the time-evolution operator, from time $t=0$ to $t=x$. The right term $S_2(sx)$ on the right-hand side of equation~\eqref{eq:fourth-order.a} evolves the system from $t=0$ to $t=sx>x$; the middle-term $S_2((1-2s)x)$ approximates the time evolution from $t=sx$ to $t=sx + (1-2s)x = (1-s)x$; finally the last term $S_2(sx)$ approximates the evolution from $t=(1-s)x$ to $t=x$. Representing the evolution as in Fig.~\ref{plot:evolution}(a), it is evident that the evolution has a part that goes to the "past". In some cases this can be problematic, for instance when studying the diffusion from a delta peak as initial state. Indeed, in this case there is no past of the initial delta peak state. 
 
 However, this problem can be easely solved by introducing another fourth-order approximant. Following the same idea, we consider
-\begin{equation}
+\begin{equation} \label{eq:fourth-order-nopast}
 S_4(x) = S_2(s_2x)^2 S_2((1-4s_2)x) S_2(s_2x)^2	
 \end{equation}
 where $s_2$ is the parameter that solve the equation
 \begin{equation}
 4s_2^3 + (1-4s_2)^3 = 0, or s_2 = \frac{1}{4 - \sqrt[3]{4}}=0.414490\ldots
 \end{equation}
-Similarly to the $S(x)$ we represent $S_2(x)$ as in Fig. . Note that this time the evolution remains between the initial and final time.
+Similarly to the $S(x)$ we represent $S_2(x)$ as in Fig.~\ref{plot:fractal-evolution}(b). Note that in this case the evolution remains between the initial and final time.
+\begin{figure}
+   \centering
+   \includegraphics[width=5cm]{Plots/evolution.eps}
+   \caption{Representation of the fouth-order approximation using (a)~\eqref{eq:fourth-order} and (b)~\eqref{eq:fourth-order-nopast}.} \label{plot:evolution}
+\end{figure}
 
-Now we can move to the sixth-order approximant, using $S_4(x)$ and following the same structure.
-\begin{equation}
-S_6(x) = S_4(s_4x)^2 S_4((1-4s_4)x) S_4(s_4x)^2
+
+Now we can move to the sixth-order approximant, using $S_4(x)$ and following the same structure:
+\begin{equation} \label{eq:sixth-order}
+S_6(x) = S_4(s_4x)^2 S_4((1-4s_4)x) S_4(s_4x)^2,
 \end{equation}
 obtaining
 \begin{equation}
-4s_4^5 + (1-4s_4)^5 = 0, or s_4 = \frac{1}{4-\sqrt[5]{4}} = 0.373065\ldots
+4s_4^5 + (1-4s_4)^5 = 0, or s_4 = \frac{1}{4-\sqrt[5]{4}} = 0.373065\ldots .
 \end{equation}
 We can continue this recursive procedure, ending up with the exact time evolution. It is interesting to note that this recursive procedure creates a fractal pattern composed by back-and-forth evolution, reproducing the exact time evolution.
+\begin{figure}
+  \centering
+   \includegraphics[width=8cm]{Plots/fractal_evolution.eps}
+   \caption{Representation of the time evolution using (a) sixth-order approximant and (b) eighth-order approximant.} \label{plot:fractal-evolution}
+\end{figure}
 
 \section{Example: spin precession}
 
-It is worth to give a brief and simple example to show some remarkable properties of the Trotter-Suzuki decomposition. In this section we compare it with the first order perturbation, using a simple example of quantum dynamics, namely the spin precession.
+It is worth to give a brief and simple example to show some remarkable properties of the Trotter-Suzuki decomposition. In this section we compare the Trotter-Suzuki decomposition with the first order perturbation, using a simple example of quantum dynamics, namely the spin precession.
 
-Consider as Hamiltonian of the system
+Consider as Hamiltonian of the system the following
 \begin{equation}
-H = \sigma_z + \Gamma \sigma_x
+H = \sigma_z + \Gamma \sigma_x,
 \end{equation}
 and as initial state the up-spin state
 \begin{equation}
 \psi(0) = 
 \begin{pmatrix}
 1 \\ 0
-\end{pmatrix}
+\end{pmatrix}.
 \end{equation}
 The evolution is simple to calculate analitically: the spin precesses around the axis of the magnetic field $\vec{H} = (\Gamma, 0, 1)$ with the period
 \begin{equation}
 T = \frac{\pi}{\sqrt{1+\Gamma^2}}.
 \end{equation}
 However, we here use the Trotter approximant
-\begin{equation}
-e^{-\frac{i}{\hbar}H \delta t} = e^{-\frac{i}{\hbar} \sigma_z \delta t} e^{-\frac{i}{\hbar} \Gamma \sigma_x \delta t}
+\begin{equation} \label{eq:trotter-approximant}
+e^{-\frac{i}{\hbar}H \delta t} = e^{-\frac{i}{\hbar} \sigma_z \delta t} e^{-\frac{i}{\hbar} \Gamma \sigma_x \delta t},
 \end{equation}
 and the perturbational approximant
-\begin{equation}
-e^{-\frac{i}{\hbar}H \delta t} = I - \frac{i}{\hbar}(\sigma_z + \Gamma\sigma_x) \delta t
+\begin{equation} \label{eq:perturbational-approximant}
+e^{-\frac{i}{\hbar}H \delta t} = I - \frac{i}{\hbar}(\sigma_z + \Gamma\sigma_x) \delta t,
 \end{equation}
-Due to the approximations used, the energy expectation $\langle H \rangle$ is not constant troughout the evolution Fig. ; as it is in the exact solution. However, as regard the Trotter approximation, the error in the energy expectation oscillates periodically, and never increases beyond the oscillation amplitude. This behavior is consistent with the property of the approximation: due to the unitarity, the state periodically comes back to the initial state with a good accuracy, producing this oscillation in the energy.
+Due to the approximations used, the energy expectation $\langle H \rangle$ is not constant throughout the evolution Fig.~\ref{plot:spin-evolution}(a) ; as it is in the exact solution. However, as regard the Trotter approximation, the error in the energy expectation oscillates periodically, and never increases beyond the oscillation amplitude. This behavior is consistent with the property of the approximation: due to the unitarity, the state periodically comes back to the initial state with a good accuracy, producing the oscillation pattern in the energy.
 
-In contrast, the error in the energy monotonically grows in the case of the perturbational approximant, as is shown in Fig. . This comes from the fact that the norm of the wave vector increases by the factor
+In contrast, the error in the energy monotonically grows in the case of the perturbational approximant, as is shown in Fig.~\ref{plot:spin-evolution}(b). This comes from the fact that the norm of the wave vector increases by the factor
 \begin{equation}
 \Vert 1 - \frac{i}{\hbar} H \Delta t H \Vert \simeq 1 + \Delta t \Vert H \Vert > 1.
 \end{equation}
 
 This simple example shows how the unitarity of the Trotter approximant improves the quality of the simulation, compared to the perturbation approximant.
+
+\begin{figure}
+  \centering
+   \includegraphics[width=12cm]{Plots/spin_evolution.eps}
+   \caption{Energy expectation value for (a) the Trotter-Suzuki approximation~\eqref{eq:trotter-approximant} and (b) the perturbation approximation~\eqref{eq:perturbational-approximant}.} \label{plot:spin-evolution}
+\end{figure}
