@@ -104,7 +104,7 @@ S_2(x) \equiv \exp\left({\frac{x}{2}A}\right) \exp\left({xB}\right) \exp\left({\
 \end{equation}
 The symmetrized approximant has the property
 \begin{equation}
-S_2(-x) S_2(x) = \exp\left({-\frac{x}{2}A}\right) \exp\left({-xB}\right) \exp\left({-\frac{x}{2}A}\right) \exp\left({\frac{x}{2}A}\right) \exp\left({xB}\right) \exp\left({\frac{x}{2}A}\right) = I,
+S_2(-x) S_2(x) = \exp\left({-\frac{x}{2}A}\right) \exp\left({-xB}\right) \exp\left({-\frac{x}{2}A}\right) \exp\left({\frac{x}{2}A}\right) \exp\left({xB}\right) \exp\left({\frac{x}{2}A}\right) = I, \nonumber
 \end{equation}
 which prove that $f(x)$ does not have even-order term in $x$. Consequently, $S_2$ is a second-order approximant, with the following form
 \begin{equation} \label{eq:S2-form}
@@ -115,16 +115,18 @@ where $R_i$ are suitable operators.
 A fourth-order approximant can be constructed from the $S_2$ considering the product
 \begin{subequations} \label{eq:fourth-order}
 \begin{align} \label{eq:fourth-order.a}
-S_4(x) &= S_2(sx) S_2((1-2s)x) S_2(sx) \\
-&= \exp\left({\frac{s}{2}xA}\right) \exp\left({sxB}\right) \exp\left({\frac{1-s}{2}xA}\right) \exp\left({(1-2s)xB}\right) \exp\left({\frac{1-s}{2}xA}\right) \exp\left({sxB}\right) \exp\left({\frac{s}{2}xA}\right),
+S_4(x) = & S_2(sx) S_2((1-2s)x) S_2(sx) \\
+= & \exp\left({\frac{s}{2}xA}\right) \exp\left({sxB}\right) \exp\left({\frac{1-s}{2}xA}\right) \exp\left({(1-2s)xB}\right) \cdot \nonumber \\
+& \cdot \exp\left({\frac{1-s}{2}xA}\right) \exp\left({sxB}\right) \exp\left({\frac{s}{2}xA}\right),
 \end{align}
 \end{subequations}
 where $s$ is an arbitrary real number. Using Eq.~\eqref{eq:S2-form} the expression~\eqref{eq:fourth-order} becomes
 \begin{subequations} \label{eq:fourth-order2}
-\begin{align} 
-S(x) &= S_2(sx) S_2((1-2s)x) S_2(sx)	 \\
-&= \exp\left({sx(A+B) + s^3x^3R_3 + O(x^5)}\right) \exp\left({(1-2s)x(A+B) + (1-2s)^3x^3R_3 + O(x^5)}\right) \exp\left({sx(A+B) + s^3x^3R_3 + O(x^5)}\right) \\
-&= \exp\left({x(A+B)+(2s^3+(1-2s)^3)R_3+O(x^5)}\right) \label{eq:fourth-order2.3}
+\begin{align} \label{eq:fourth-order2}
+S(x) = & S_2(sx) S_2((1-2s)x) S_2(sx)	 \\
+= & \exp\left({sx(A+B) + s^3x^3R_3 + O(x^5)}\right) \exp\left({(1-2s)x(A+B) + (1-2s)^3x^3R_3 + O(x^5)}\right) \nonumber \\
+& \exp\left({sx(A+B) + s^3x^3R_3 + O(x^5)}\right) \\
+= & \exp\left({x(A+B)+(2s^3+(1-2s)^3)R_3+O(x^5)}\right) \label{eq:fourth-order2.3}
 \end{align}
 \end{subequations}
 The property $S(-x)S(x) = I$ also holds in this case, so we can conclude that the even-order correction in the exponent of~\eqref{eq:fourth-order2} will vanish, and the parameter $s$ must satisfy
