@@ -46,3 +46,56 @@ Data within the cache are stored in \textit{cache lines}. A cache line holds the
 The most commonly used strategy is \textit{random} and \textit{least recently used (LRU)}. The former randomly chooses a cache line to be replaced. The latter replaces the block which has not been accessed for the longest time interval. Less common strategies are \textit{least frequently used (LFU)} and \textit{first in, first out (FIFO)}. The LFU replaces the memory block in the cache line which has least frequently been used, whereas the FIFO replaces the data which have been residing in cache for the longest time.
 
 These strategy are based on the principle of \textit{locality} references~\cite{Hennessy-Patterson}, which states that recently used data are very likely to be reused in the near future. Locality can be of two different type: \textit{temporal} locality and \textit{spatial} locality. A sequence of references exhibits temporal locality if recently accessed data are likely to be accessed again in the near future. A sequence of references manifest spatial locality if data located close together in address space tend to be referred close together in time.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Data Access Optimizations}
+The most straightforward and simple approach to implement an algorithm on a code, usually does not achieve the best execution performance. As we saw in the previous section, to reach this goal the programmer has to care about how the data are handled by the memory hierarchy and how the CPUs access to them. In scientific computation, this typically imply the need to apply transformation on the code, that change the order in which iterations in a loop nest are executed. Such transformations are part of \textit{data access optimizations} techniques, which goal is mainly to improve temporal locality. We present in this section data optimization techniques that preserve the final result.\footnote{Numerical results may slightly change due to the properties of finite precision arithmetic} We focus on a set of loop transformations that improve data locality for one level of the memory hierarchy: a cache.
+\\
+
+\noindent \textit{Loop Interchange}. This transformation reverse the order of two adjacent loops in a loop nest. This can be generalized to \textit{loop permutation} where more than two loops are moved at once.  %ref(2,65)
+
+Loop interchange can improve locality by reducing the \textit{stride} of an array-based computation. The stride is the distance of array elements in memory accessed within consecutive loop iterations. For instance, suppose we want to calculate the square norm of a vector (Algorithm~\ref{algo:loop-interchange}). Furthermore suppose that the vector is stored in a (6,8) array in memory Fig.~\ref{fig:interchanged-loop-nests}, in \textit{row major order}; i.e. two array elements are stored adjacent in memory if their second indices are consecutive numbers. The code corresponding to the left part of Fig.~\ref{fig:interchanged-loop-nests}, accesses the array elements in a column-wise manner, so the stride is equal to 8. Consequently, the preloaded data in the cache line marked with grey color will not be reused if the array is too large to fit entirely in cache. The next data will be fetched from the main memory. Interchanging the loop nest allow the cache line to be reused, as the stride is now 1 (right part of Fig.~\ref{fig:interchanged-loop-nests}). \\
+\begin{figure}
+   \centering
+   \includegraphics[width=10cm]{Figs/Interchanged_loop_nests.eps}
+   \caption{Access pattern for interchenged loop nests in a (6,8) array.} \label{fig:interchanged-loop-nests}
+\end{figure} 
+
+
+\begin{algorithm}[t]
+\SetAlgoLined
+double $norm2$\;
+double $a[n,n]$\;
+//Original loop nest\;
+\For{$j = 1$ \KwTo n }{
+	\For{$i = 1$ \KwTo n }{
+		$norm2 += a[i,j] \cdot a[i,j]$\;	
+	}
+}
+\caption{Loop interchange} \label{algo:loop-interchange}
+\end{algorithm}
+
+
+\noindent \textit{Loop Fusion}. This transformation takes two adjacent loops that have the same iteration space traversal and combines their bodies into a single loop.%ref(17)
+When Loop fusion can be applied -- when there are no instruction dependencies between the fused loops -- data locality may be improved. Assume that two consecutive loops perform global sweeps through an array as in the code shown in Algorithm~\ref{algo:loop-fusion},
+and that the data are too large to fit entirely in the cache. When the first loop finish, the data of array \textit{b} are not completely loaded in cache, and the second loop will have to reload them from the main memory. If the two loops are combined with loop fusion only one global sweep through the array \textit{b} will be performed, resulting in less cache misses. \\
+\begin{algorithm}[h]
+//Original loop nest\;
+\SetAlgoLined
+\For{$i = 1$ \KwTo n }{
+	$b[i] = a[i] + 1$\;
+}
+\For{$i = 1$ \KwTo n }{
+	$c[i] = b[i] \cdot 3$\;
+}
+\caption{Loop fusion} \label{algo:loop-fusion}
+\end{algorithm}
+
+%\noindent \textit{Loop Blocking}. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{CPUs kernel}
+The code implements two CPU kernels: both are  cache optimized, but one is further optimized to use the SSE instruction set of the CPU. In this section we explain the CPU kernels in a single thread scenario and the cache optimization strategy adopted.
+
+\subsection{Matrix updating scheme}
+The wavefunction of the system $\psi_{i,j}$ is stored in an array in row major order. The evolved wave function
