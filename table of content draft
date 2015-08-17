@@ -4,20 +4,23 @@
 	-outline what we did
 	-organization of the book, brief description of the chapters
 
--Trotter Suzuki Approximation (8pag)
+-Trotter Suzuki Approximation:(9pag)
 	-why we have to deal with exponential operators
 	-the advantages of the trotter approximation
 	-fractal decomposition
 	-example: spin precession
 
--Implementations:(6pag)
+-Decomposition of Unitary Evolution:(6pag)
 	-A simple case 1d paticle
 	-The actual implementation
 
--Description of the program (8pag)
-	
+-Implementations:(12pag)
+	-cache optimization
+	-CPUs kernel
+	-GPUs structure
+	-GPU kernel
 	-parallelization  
-	-kernels
+	-.....
 	-API
 	-Python & MATLAB
 

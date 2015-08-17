@@ -94,8 +94,91 @@ and that the data are too large to fit entirely in the cache. When the first loo
 %\noindent \textit{Loop Blocking}. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{CPUs kernel}
+\section{CPU kernels}
 The code implements two CPU kernels: both are  cache optimized, but one is further optimized to use the SSE instruction set of the CPU. In this section we explain the CPU kernels in a single thread scenario and the cache optimization strategy adopted.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Matrix updating scheme}
-The wavefunction of the system $\psi_{i,j}$ is stored in an array in row major order. The evolved wave function
+The wave function of the system $\psi_{i,j}(0)$ is stored in two arrays in row major order, one for the real part and one for the imaginary part. The evolved wave function $\psi_{i,j}(t)$ is calculated dividing the time in small time intervals of length $\Delta t$. To have an accurate simulation, $\Delta t$ must satisfy the inequality $\Delta t \ll \frac{m \Delta L^2}{\hbar}$, where $m$ is the particle mass and $\Delta L$ is the distance between two consecutive dots of the mesh. Indeed if we exploit the Tailor expansion of the evolution operator
+\begin{equation}
+\mathrm{e}^{\frac{\imath}{\hbar}H\Delta t} = 1 + \frac{\imath}{\hbar}H\Delta t + O(\Delta t^2),
+\end{equation} 
+we have $1 \gg \frac{\Delta t}{\hbar}\parallel H \parallel $. Supposing that the leading term in the Hamiltonian is the kinetic term, the second-order derivative approximation (Eq.~\eqref{eq:second-order-derivative}) lead to $1 \gg \frac{\hbar}{m \Delta L^2} \Delta t$.
+
+In the second-order Trotter-Suzuki approximation, the $\psi_{i,j}(\Delta t)$ is the result of nine matrix-vector products. From Eq.~\eqref{eq:second-TS-evo-operator} and Eq.~\eqref{eq:1approxTS}, we have
+\begin{align} \label{eq:single-iteration}
+\psi(\Delta t) = \mathrm{e}^{\imath \frac{\alpha}{2} \hat{A}_y} \mathrm{e}^{\imath \frac{\alpha}{2} \hat{A}_x}   \mathrm{e}^{\imath \frac{\alpha}{2} \hat{B}_y} \mathrm{e}^{\imath \frac{\alpha}{2} \hat{B}_x}  \mathrm{e}^{-\frac{\imath \Delta t}{\hbar}\hat{V}} \mathrm{e}^{\imath \frac{\alpha}{2} \hat{B}_x} \mathrm{e}^{\imath \frac{\alpha}{2} \hat{B}_y} \mathrm{e}^{\imath \frac{\alpha}{2} \hat{A}_x} \mathrm{e}^{\imath \frac{\alpha}{2} \hat{A}_y} \psi(0)
+\end{align}
+where $\alpha = \frac{\hbar \Delta t}{2m\Delta L^2}$. Note that we got rid of the phase changing factor $\mathrm{e}^{-\frac{\imath \Delta t \hbar}{m \Delta L^2} I}$ present in Eq.~\eqref{eq:1approxTS}. The exponential of the potential is diagonal and it is straightforward to implement. As regard the other matrices, the matrix vector multiplication can be decomposed in a series of linear combinations of couple of two neighbouring nodes in the mesh. This can be easily understood from the form of the $A$ and $B$ (Eq.~\eqref{eq:A-B-form}) that lead to Eq.~\eqref{eq:expA} and Eq.~\eqref{eq:expB}. Consider the couple $\psi_{i,j}$ and $\psi_{i,j+1}$, when $j$ is even, $\mathrm{e}^{\imath \frac{\alpha}{2} A_y}$ acts so that
+\begin{align}
+\hat{\psi}_{i,j} = & \cos\left(\frac{\alpha}{2}\right) \psi_{i,j} + \imath \sin\left(\frac{\alpha}{2}\right) \psi_{i,j+1} \\
+\hat{\psi}_{i,j+1} = & \imath\sin\left(\frac{\alpha}{2}\right) \psi_{i,j} + \cos\left(\frac{\alpha}{2}\right) \psi_{i,j+1} 
+\end{align}
+In this operation, the sites $(i,j)$ and $(i,j+1)$ in the arrays are updated. We schematically represent this operation by mean of the diagram in Fig.~\ref{fig:scheme-single-iteration}.
+\begin{figure}
+   \centering
+   \includegraphics[width=2.5cm]{Figs/Single_couple.png}
+   \caption{Single coupling operation.} \label{fig:scheme-single-iteration}
+\end{figure}
+Note that we do not need to store the exponential operator matrices $\mathrm{e}^{\imath \frac{\alpha}{2} A}$ and $\mathrm{e}^{\imath \frac{\alpha}{2} B}$. It is sufficient to store only two values: $ \cos\left(\frac{\alpha}{2}\right)$ and $\sin\left(\frac{\alpha}{2}\right)$.
+
+Following this scheme, Eq.~\eqref{eq:single-iteration} can be schematized as in Fig.~\ref{fig:scheme-iteration}. The single time evolution is divided in nine computational steps corresponding to the matrix vector multiplications. Furthermore, the operations are independent one another, so that sites in each computational step can be updated in place.
+\begin{figure}
+   \centering
+   \includegraphics[width=8cm]{Figs/Single_time_step_evolution.png}
+   \caption{Single time step evolution scheme for the second order Trotter-Suzuki.} \label{fig:scheme-iteration}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Cache-aware implementation}
+A Naive approach to implement the scheme in Fig.~\ref{fig:scheme-iteration} is by performing each computational step in a single pass over the entire array of sites. This perform efficiently as long as the array of sites fits in the cache, so that the CPU fetch the data directly from the cache. However, for large system sizes, data need to be fetched from the main memory, resulting in a fall of performance~\citep{bederian2011boosting}. 
+
+Cache optimization can be achieved dividing the array of sites in blocks that fit in the cache and performing a single time step evolution for each one of them, separately. This raise the problem of data dependency. Suppose that a block has been read to the cache and evolved a number of steps. We cannot write the results back to the same array in the main memory, from where the block was read, as blocks adjacent to it still need some values on the boundary between the blocks for their own evolution. This is fixed through double buffering, allocating two arrays in the main memory instead of one and going back and forth between the two,reading from one and writing on the other.
+
+Besides, to perform some computational steps on a block, we need the sites surrounding the block to be present in the cache as well, otherwise the sites on the edge of the block will not be valid. This is because each site needs their four neighbours to complete a single time step evolution. As we try to perform more computational steps on a block, the amount of nodes external to the block increases. These nodes generate a \textit{halo} around a block that must also be read into the cache and updated, but that at later steps become invalid because their own halos are not present. The minimum value of the halo thickness for a single time step evolution is of four sites, since there are four computational steps that couple sites for each direction.
+
+In a non distributed version of the kernels a single CPU performs the time step evolutions as schematized in Fig.%figure scheme
+. The multiple step strategy, combined with the tunable block size that depends on the hardware's cache size, put the algorithm in the family of cache-aware stencil computations~\cite{kamil2006implicit}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{GPU kernel}
+As the time step evolution is composed by simple and high parallelizable instructions, an implementation that runs on GPU gain a high speed-up compare to a CPU kernel. Indeed, GPUs has gained a much higher computational power with respect to CPU, as illustrated in Fig.~\ref{fig:CPU-GPU-computational-power}. This motivate the development of a GPU kernel. In this section we outline the differences between CPU and GPU, describing the features of the latter. A description of the non distributed version of GPU kernel follows.
+\begin{figure}
+   \centering
+   \includegraphics[width=10cm]{Figs/CPU-GPU_computational_power.eps}
+   \caption{Floating-point operations per second for the CPU and GPU.} \label{fig:CPU-GPU-computational-power}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{GPU structure}
+The reason behind the discrepancy in floating-point capability between the CPU and the GPU is that the GPU is specialized for compute-intense, highly parallel computation and therefore designed such that more transistors are devoted to data processing rather than data caching and flow control. Indeed, GPU is well-suited to address problems that can be expressed as data-parallel computations, where the same program is executed on many data elements in parallel. Consequently, there is a lower requirement for sophisticated flow control. Furthermore, because the program is executed on many data elements and has high arithmetic intensity, the memory access latency can be hidden with calculations instead of big data caches.
+
+GPUs adopt \textit{SIMT (single instruction, multiple thread)} architecture as parallel execution model. Data elements are processed by sequence of parallel instructions called \textit{threads}. The NVIDIA GPU architecture is built around a scalable array of multithreaded \textit{Streaming Multiprocessors (SMs)}. Threads are managed, created, scheduled and executed by SMs in groups of 32 parallel threads called \textit{warps}. Individual threads composing a warp start together at the same program address, but they have their own instruction address counter and register state and are therefore free to branch and execute independently. When a multiprocessor is given one or more thread blocks to execute, it partitions them into warps and each warp gets scheduled by a warp scheduler for execution. 
+
+A warp executes one common instruction at a time, so full efficiency is realized when all 32 threads of a warp agree on their execution path. If threads of a warp diverge via a data-dependent conditional branch, the warp serially executes each branch path taken, disabling threads that are not on that path, and when all paths complete, the threads converge back to the same execution path (Fig.~\ref{fig:warp-instruction}). Branch divergence occurs only within a warp; different warps execute independently regardless of whether they are executing common or disjoint code paths. Consequently, avoiding threads in a warp to branch, the execution achieve better performance.
+\begin{figure}
+   \centering
+   \includegraphics[width=13.5cm]{Figs/Warp_instruction.png}
+   \caption{Instance of a warp execusion. The left part of the graph illustrates the instructions to be performed by each thread. Each thread execute three instructions; instructions with the same color are identical. The right part of the graph illustrates how the instruction are executed within by the threads within a warp. Threads, that execute the same instruction, perform the instruction at the same time. Different instructions are performed on different times. In this example threads are not in the same execution path -- there are at least three different paths -- resulting in a inefficient time performance.} \label{fig:warp-instruction}
+\end{figure}
+
+GPU are easily programmed using \textit{CUDA C} an extension of high-level programming language C. CUDA C extends C by allowing the programmer to define C functions (kernels) that are executed N times in parallel by N different \textit{CUDA threads}. Each thread is associated to a 3-component vector, so that they are organized in a 3d structure. Groups of threads are collected in \textit{thread blocks}, whose size is dictated by the programmer. However, there is a limit to the number of threads per block, since all threads of a block are expected to reside on the same processor core and must share the limited memory resources of that core. Blocks are organized into a \textit{grid} of thread blocks, which can be one, two or three dimensional.
+
+GPU's memory is organized in a hierarchy, as it happen for the CPU (Fig.~\ref{fig:GPU-memory-hierarchy}). Closest to the processors there are fast and small registers, in which each thread store a private local memory space. On the next level in the hierarchy, there are \textit{shared memories}. Each thread block can access to a memory space stored on shared memories, which is visible to all the threads of the block. The last level consist in a global memory, accessible by all the threads.
+\begin{figure}
+   \centering
+   \includegraphics[width=10cm]{Figs/GPU_memory_hierarchy.eps}
+   \caption{GPU memory hierarchy.} \label{fig:GPU-memory-hierarchy}
+\end{figure}
+
+In the CUDA programming model, the GPU is regarded as a physically separate \textit{device} that operates as a coprocessor to the \textit{host} -- the CPU -- running the C program. This is the case when the kernel execute on a GPU, while the rest of the C program executes on a CPU. The host and the device maintain their own separate memory spaces. Therefore, host and device communicate to share data. In particular, the host can allocate and deallocate space on the device global memory, as well as transfer data between host main memory and device global memory.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{GPU implementation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Hybrid kernel}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Distributed version of the kernels}
