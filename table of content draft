@@ -14,7 +14,7 @@
 	-A simple case 1d paticle
 	-The actual implementation
 
--Implementations:(12pag)
+-Implementations:(20pag)
 	-cache optimization
 	-CPUs kernel
 	-GPUs structure
