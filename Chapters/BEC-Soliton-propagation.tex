@@ -1,0 +1,66 @@
+\chapter{Soliton propagation in Bose-Einstein condensate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Gross-Pitaevskii equation}
+The dynamic of a Bose-Einstein condensate (BEC) may be described by a non linear Schr\"odinger equation, namely the Gross-Pitaevskii equation. Suppose we have a $N$-particle system, comprised of bosons interacting with each other. Using the Hartree approximation, we write the many-body wave function as
+\begin{equation}
+\psi(\textbf{r}_1, \textbf{r}_2,\ldots, \textbf{r}_N) = \prod_{i=1}^N \phi(\textbf{r}_i),
+\end{equation}
+where the single-particle wave function $\phi(\textbf{r}_i)$ is normalized in the usual way,
+\begin{equation}
+\int \mathrm{d}\textbf{r} \, |\psi(\textbf{r})|^2 = 1.
+\end{equation} 
+For low energy particles the interaction can be described by an effective potential %(PS6.1)
+that in coordinate space corresponds to a contact interaction $U_0 \delta(\textbf{r} - \textbf{r}')$, where $U_0 = 4 \pi \hbar^2 a / m$ and $a$ is the scattering length of the interaction. Considering an external potential $V(\textbf{r}_i)$, the Hamiltonian may be written as
+\begin{equation}
+H = \sum_{i=1}^N \left[ \frac{\textbf{p}_i^2}{2 m} + V(\textbf{r}_i) \right] + U_0 \sum_{i<j} \delta(\textbf{r}_i - \textbf{r}_j).
+\end{equation}
+The energy of the state is given by
+\begin{equation}
+E =  N \int \mathrm{d} \textbf{r} \, \left[ \frac{\hbar^2}{2m} |\nabla \psi(\textbf{r}) |^2 + V(\textbf{r}) |\psi(\textbf{r})|^2 + \frac{(N-1)}{2} U_0 |\psi(\textbf{r})|^4 \right].
+\end{equation} 
+It is convenient to introduce the concept of the wave function of the condensed state,
+\begin{equation}
+\psi(\textbf{r}) = N^{1/2} \phi(\textbf{r}),
+\end{equation}
+so that the normalization condition is
+\begin{equation}
+\int \mathrm{d}\textbf{r} \, |\psi(\textbf{r})|^2 = N.
+\end{equation}
+Moreover, we suppose that $N \gg 1$ so that the energy can be rewritten as,
+\begin{equation}
+E = \int \mathrm{d} \textbf{r} \, \varepsilon  = \int \mathrm{d} \textbf{r} \, \left[ \frac{\hbar^2}{2m} |\nabla \psi(\textbf{r}) |^2 + V(\textbf{r}) |\psi(\textbf{r})|^2 + \frac{1}{2} U_0 |\psi(\textbf{r})|^4 \right].
+\end{equation}
+The equation of motion may be derived from the principle of least action 
+\begin{equation}
+\delta \int_{t1}^{t2} \mathrm{d} t \, L = 0 \label{eq:least-principle}
+\end{equation}
+where the Lagrangian $L$ is given by
+\begin{equation}
+L = \int \mathrm{d} \textbf{r} \, \left[ \frac{\imath \hbar}{2} \left( \psi^\ast \frac{\partial \psi}{\partial t} - \psi \frac{\partial \psi^\ast}{\partial t} \right) - \varepsilon \right].
+\end{equation}
+Requiring that the variation of the independent variables $\psi(\textbf{r},t)$ and $\psi(\textbf{r},t)$ vanish at $t=t_1$ and $t=t_2$, and on any spatial boundaries, from Eq.~\eqref{eq:least-principle} one finds the Gross-Pitaevskii equation:
+\begin{equation}
+\imath \hbar \frac{\partial \psi(\textbf{r}, t)}{\partial t} = - \frac{\hbar^2}{2m} \nabla^2 \psi(\textbf{r}, t) + V(\textbf{r}) \psi(\textbf{r}, t) + U_0 |\psi(\textbf{r}, t)|^2 \psi(\textbf{r}, t).
+\end{equation}
+
+The ground-state of the system may be found numerically using the imaginary time evolution. However, an accurate expression is obtained using the Thomas-Fermi approximation. Suppose that the particles have low kinetic energy, then the ground-state is approximated by the solution of the time independent Gross-Pitaevskii equation deprived of the kinetic term
+\begin{equation}
+\left[ V(\textbf{r}) + U_0 |\psi(\textbf{r})|^2 \right] \psi(\textbf{r}) = \mu \psi(\textbf{r}),
+\end{equation}
+where $\mu$ is the chemical potential. This give the solution
+\begin{equation}
+n(\textbf{r}) = |\psi(\textbf{r})|^2 = \frac{\mu - V(\textbf{r})}{U_0},
+\end{equation}
+for $\textbf{r}$ such that $V(\textbf{r}) > \mu$. 
+For a BEC trapped in a harmonic potential of the form
+\begin{equation}
+V(x,y) = \frac{m}{2} (\omega_1^2 x^2 + \omega_2^2 y^2)
+\end{equation}
+the extension of the condensate wave function in the two directions is given by the two semi-axes
+\begin{equation}
+R_i^2 = \frac{2\mu}{m\omega_i^2}, \, i = 1,2
+\end{equation}
+and the particles density has the form of an upside down parabola. The Tomas-Fermi approximation gives an accurate description of the bulk properties of the system, but it fails near the edge of the cloud.
+%ref PS6.3
