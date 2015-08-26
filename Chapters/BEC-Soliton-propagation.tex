@@ -1,9 +1,11 @@
-\chapter{Soliton propagation in Bose-Einstein condensate}
-
+\chapter{Dark solitons in BEC}
+As a physical application of the code developed, we carried out simulations about Bose-Einstein condensate (BEC). In particular we reproduced results of an experimental study performed at the National Institute of Standards and Technology (NIST), where they investigated the realization and evolution of solitons in BEC of sodium atoms.
+%ref NIST
+ In this chapter we briefly introduce the theoretical background of BEC and dark solitons, and proceed with the illustration of the simulation results, comparing them to the results of the NIST.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Gross-Pitaevskii equation}
-The dynamic of a Bose-Einstein condensate (BEC) may be described by a non linear Schr\"odinger equation, namely the Gross-Pitaevskii equation. Suppose we have a $N$-particle system, comprised of bosons interacting with each other. Using the Hartree approximation, we write the many-body wave function as
+\section{Theoretical background}
+The dynamic of a Bose-Einstein condensate may be described by a non linear Schr\"odinger equation, namely the Gross-Pitaevskii equation. Suppose we have a $N$-particle system, comprised of bosons interacting with each other. Using the Hartree approximation, we write the many-body wave function as
 \begin{equation}
 \psi(\textbf{r}_1, \textbf{r}_2,\ldots, \textbf{r}_N) = \prod_{i=1}^N \phi(\textbf{r}_i),
 \end{equation}
@@ -12,19 +14,19 @@ where the single-particle wave function $\phi(\textbf{r}_i)$ is normalized in th
 \int \mathrm{d}\textbf{r} \, |\psi(\textbf{r})|^2 = 1.
 \end{equation} 
 For low energy particles the interaction can be described by an effective potential %(PS6.1)
-that in coordinate space corresponds to a contact interaction $U_0 \delta(\textbf{r} - \textbf{r}')$, where $U_0 = 4 \pi \hbar^2 a / m$ and $a$ is the scattering length of the interaction. Considering an external potential $V(\textbf{r}_i)$, the Hamiltonian may be written as
+that in coordinate space corresponds to a contact interaction $U_0 \delta(\textbf{r} - \textbf{r}')$, where $U_0 = 4 \pi \hbar^2 a_s / m$ and $a_s$ is the scattering length of the interaction. Considering an external potential $V(\textbf{r}_i)$, the Hamiltonian may be written as
 \begin{equation}
 H = \sum_{i=1}^N \left[ \frac{\textbf{p}_i^2}{2 m} + V(\textbf{r}_i) \right] + U_0 \sum_{i<j} \delta(\textbf{r}_i - \textbf{r}_j).
 \end{equation}
 The energy of the state is given by
 \begin{equation}
-E =  N \int \mathrm{d} \textbf{r} \, \left[ \frac{\hbar^2}{2m} |\nabla \psi(\textbf{r}) |^2 + V(\textbf{r}) |\psi(\textbf{r})|^2 + \frac{(N-1)}{2} U_0 |\psi(\textbf{r})|^4 \right].
+E =  N \int \mathrm{d} \textbf{r} \, \left[ \frac{\hbar^2}{2m} |\nabla \phi(\textbf{r}) |^2 + V(\textbf{r}) |\phi(\textbf{r})|^2 + \frac{(N-1)}{2} U_0 |\phi(\textbf{r})|^4 \right].
 \end{equation} 
 It is convenient to introduce the concept of the wave function of the condensed state,
 \begin{equation}
 \psi(\textbf{r}) = N^{1/2} \phi(\textbf{r}),
 \end{equation}
-so that the normalization condition is
+so that the normalization condition becomes
 \begin{equation}
 \int \mathrm{d}\textbf{r} \, |\psi(\textbf{r})|^2 = N.
 \end{equation}
@@ -41,15 +43,17 @@ where the Lagrangian $L$ is given by
 L = \int \mathrm{d} \textbf{r} \, \left[ \frac{\imath \hbar}{2} \left( \psi^\ast \frac{\partial \psi}{\partial t} - \psi \frac{\partial \psi^\ast}{\partial t} \right) - \varepsilon \right].
 \end{equation}
 Requiring that the variation of the independent variables $\psi(\textbf{r},t)$ and $\psi(\textbf{r},t)$ vanish at $t=t_1$ and $t=t_2$, and on any spatial boundaries, from Eq.~\eqref{eq:least-principle} one finds the Gross-Pitaevskii equation:
-\begin{equation}
-\imath \hbar \frac{\partial \psi(\textbf{r}, t)}{\partial t} = - \frac{\hbar^2}{2m} \nabla^2 \psi(\textbf{r}, t) + V(\textbf{r}) \psi(\textbf{r}, t) + U_0 |\psi(\textbf{r}, t)|^2 \psi(\textbf{r}, t).
+\begin{equation} \label{eq:gross-pitaevskii}
+\imath \hbar \frac{\partial \psi(\textbf{r}, t)}{\partial t} = \left[ - \frac{\hbar^2}{2m} \nabla^2 + V(\textbf{r}) + U_0 |\psi(\textbf{r}, t)|^2 \right] \psi(\textbf{r}, t).
 \end{equation}
+
+Formally, Eq.~\eqref{eq:gross-pitaevskii} is not implemented in our code since the Hamiltonian is not simply comprised of a kinetic term and an external potential term. However, if we denote $\tilde{V}(\textbf{r}, \psi(\textbf{r}, t)) = V(\textbf{r}) + U_0 |\psi(\textbf{r}, t)|^2$, the single time step evolution still has the form~\eqref{eq:single-iteration} and the exponential operator $\exp \left( - \frac{\imath}{\hbar} \tilde{V}(\textbf{r}, \psi(\textbf{r}, t)) \right)$ is still diagonal in the coordinate representation. Thus, we only have to define the potential such that, in the computational step 5 (Fig.~\ref{fig:scheme-iteration}), each site $(i,j)$ is also multiplied by the factor $\exp(-\frac{\imath}{\hbar} U_0 |\psi(i,j)|^2)$ where $\psi(i,j)$ is the wave function calculated in the previous computational step.
 
 The ground-state of the system may be found numerically using the imaginary time evolution. However, an accurate expression is obtained using the Thomas-Fermi approximation. Suppose that the particles have low kinetic energy, then the ground-state is approximated by the solution of the time independent Gross-Pitaevskii equation deprived of the kinetic term
 \begin{equation}
 \left[ V(\textbf{r}) + U_0 |\psi(\textbf{r})|^2 \right] \psi(\textbf{r}) = \mu \psi(\textbf{r}),
 \end{equation}
-where $\mu$ is the chemical potential. This give the solution
+where $\mu$ is the chemical potential. This gives the solution
 \begin{equation}
 n(\textbf{r}) = |\psi(\textbf{r})|^2 = \frac{\mu - V(\textbf{r})}{U_0},
 \end{equation}
@@ -62,5 +66,81 @@ the extension of the condensate wave function in the two directions is given by 
 \begin{equation}
 R_i^2 = \frac{2\mu}{m\omega_i^2}, \, i = 1,2
 \end{equation}
-and the particles density has the form of an upside down parabola. The Tomas-Fermi approximation gives an accurate description of the bulk properties of the system, but it fails near the edge of the cloud.
+and the particles density has the form of an upside down parabola. The Tomas-Fermi approximation gives an accurate description of the bulk properties of the system, but it fails near the edge of the cloud. Provided that $V(\textbf{r})$ varies slowly, a better solution for the ground state may be found solving the entire time independent Gross-Pitaevskii equation taking the linear term of the external potential at the edge of the cloud.
 %ref PS6.3
+
+However, the Gross-Pitaevskii equation has exact analytical solution in the non linear regime. These solutions have the form of solitary waves, called solitons, which are localized disturbance that propagate without changing of form. This phenomenon is due to the balance between dispersion and non linearity, which in Eq.~\eqref{eq:gross-pitaevskii} correspond to the kinetic term and the non linear interaction respectively. Solitons appear in different contexts of science and engineering, such as the dynamics of waves in shallow water,
+%NIST(11)
+transport along DNA and other macromolecules,
+%NIST(12)
+and fiber optic communications.
+%NIST 13
+They can be either bright or dark. The former are peak in the amplitude, while the former are notch with a characteristic phase step across it. In the present work we focus on dark solitons. 
+
+For BEC with repulsive interaction between the atoms, solitons, which are solution of the Gross-Pitaevskii, present a depression in the density profile -- dark soliton. In a homogeneous BEC, the resulting density profile along the x axis is
+\begin{equation}
+n(x,t) = n_{min} + \left(n_0 - n_{min}\right)\tanh^2 \left( \frac{x - \nu_s t}{\sqrt{2} \xi} \sqrt{1 - \left( \frac{\nu_s}{\nu_0} \right)^2 } \right)
+\end{equation}
+where $n_0$ is the unperturbed density, $n_{min}$ is the density at the bottom of the soliton, $\nu_s$ and  $\nu_0 = (\frac{nU_0}{m})^{\frac{1}{2}}$ are the speed of the soliton and the speed of sound respectively, and 
+\begin{equation}
+\xi = \frac{\hbar}{\left( 2mn_0 U_0 \right)^{1/2}}
+\end{equation}
+being the healing length.
+%PS(7.6)
+The speed and the depth of the soliton can be related with each other. Indeed, the soliton speed $\nu_s$ can be expressed as
+\begin{equation}
+\nu_s = \nu_0 \sqrt{ \frac{n_{min}}{n} },
+\end{equation}
+%NIST(14,15)
+ Note that soliton speed is less than the speed of sound.
+The soliton speed can also be expressed by mean of the change in phase of the wave function across them:
+\begin{equation}
+\nu_s = \nu_0 \cos \left( \frac{\delta}{2} \right).
+\end{equation}
+%sqrt(2)T period of soliton
+
+\section{Soliton simulation}
+In the experiments carried out in, %ref NIST
+the generation and propagation of solitons were studied in BEC of sodium atoms, confined in a magnetic trap. The magnetic trap generated a harmonic external potential with frequencies $\omega_x = \sqrt{2}\omega_y = 2 \omega_z = 2 \pi \cdot 28\,$Hz. The system were composed by $2 \cdot 10^6$ atoms in the $3S_{1/2}$, $F=1$, $m_F=-1$ state. 
+
+In this experiment the system has a 3D dimension, while our implementation is designed for a 2D system. However, our purpose is to study the evolution of a soliton which propagates in one dimension, so we can ignore the dynamic along one of the two dimensions perpendicular to the axis of propagation by integration. We chose to integrate along the y axis. In the literature, one can find diverse methods to reduce a 3D problem to a 2D one.
+%ref Pietro Thesis(JKP98,SZ98, Sal01, SPR02)
+ Since the system we are studying is well described by the Thomas-Fermi approximation, we adopt the method described in, which is indicated to find the ground-state.
+%ref Pietro thesis
+The approach is to change the form of the particles interaction, such that the chemical potential for the 2D system is the same as the 3D system. If the Thomas-Fermi approximation accurately describes the ground state, the spatial extension of the 2D system will be the same as the 3D system (see Appendix~\ref{App:A}). 
+The resulting Gross-Pitaevskii equation for the 2D system becomes
+\begin{equation}
+\imath \hbar \frac{\partial \psi(\textbf{r}, t)}{\partial t} = \left[ \sum_{i=1}^2 \left( -\frac{\hbar^2}{2m} \frac{\partial^2}{\partial x_i^2} + \frac{m}{2} \omega_i^2 x_i^2 \right) + U_0^{(2)} |\psi(\textbf{r}, t)|^2 \right] \psi(\textbf{r}, t),
+\end{equation}
+where
+\begin{equation}
+U_0^{(2)} = \frac{2\pi}{N} \mu_{TF}^2 ,
+\end{equation}
+and $\mu_{TF}$ is the chemical potential in the Thomas-Fermi approximation for the 3D system
+\begin{equation}
+\mu_{TF} = \frac{1}{2} \left( 15 N \hbar^2 \omega_x \omega_y \omega_z \sqrt{m} a_s \right)^{2/5}
+\end{equation}
+\\
+\noindent \textbf{Ground state.} Initially the BEC is described by the ground state  of Eq.~\eqref{eq:gross-pitaevskii}. According to the experiment, it has a uniform phase and the Thomas-Fermi radius of the cloud is. %values.. 
+We used the imaginary time evolution to approximate the ground state. We proceed by taking an initial state, evolving it in imaginary time for a fixed number of iterations and then calculating the energy of the resulting state. Repeating this procedure using as initial state the one resulting from the preceding iteration, the energy decrease converging to a value. If we call $E_i$ the energy of the state resulting from the $i-$th iteration, we stopped the procedure once the $i-$th state satisfied the convergence condition
+\begin{equation}
+\left| \frac{E_{i} - E_{i-1}}{E_{i-1}} \right| < 10^{-6}.
+\end{equation}
+This ensure that the $i-$th state is an accurate approximation of the ground state. In Fig. %figure of the ground state denisity's profile along the two axis
+the sections of the particle density along the two axis are shown. The extension of the cloud result in good accordance both with the Thomas-Fermi radius and the experimental values (Tab.). %tab of TF radius, experimental and theoretical
+
+
+\noindent \textbf{Soliton propagation.} Solitons can be generated in BEC by phase imprinting. The phase of the ground state is modified by exposing the cloud to pulsed, off-resonant laser light with an intensity pattern $I(x,y)$. The wave function acquires a corresponding phase $\phi(x,y)$ proportional to $I(x,y)$ and the time of exposure, so that the transformation is $\psi \rightarrow \psi \exp(\imath \phi(x,y))$. According to the experiment, they chose $T$ to be short enough so that the atomic motion was negligible (Raman-Nath regime) and the effect of the pulse can be expressed as a sudden phase imprint. The phase imprint can be approximated as
+\begin{equation}
+\phi(x,y) = \frac{\phi_0}{2} \left(1 + \tanh\left(\frac{x}{l}\right)\right),
+\end{equation}
+where $\phi_0 = 1.5\pi$ and $l=2 \mathrm{\mu m}$. Measuring the BEC density distribution with absorption imaging, with such values they observe the generation of a single deep soliton.
+
+The phase imprinting correspond to impressing a momentum to a static ground state, in the region of space where the phase varies. This led to a collective motion of the system which realize into an oscillation of the BEC along the x axis. This can be seen in the simulation. Fig. %fig of oscillation
+ illustrates how the expectation value of the position along the x axis varies in time, oscillating with the same frequency as the harmonic potential $\omega_x$.
+
+Due to the pattern of the phase imprinting, they observed a positive density disturbance that travels in the $+x$ direction. Indeed, the steep phase gradient across the middle of the condensate, make this portion having a large velocity 
+
+%describe soliton propagation
+
+% As regard the soliton, it also oscillate along the x axis but in the reverse direction. 
