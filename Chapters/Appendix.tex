@@ -1,2 +1,45 @@
-\chapter{Reduction of dimension} \label{App:A}
-%reduction of dimension (Pietro thesis)
+\chapter{Reduction of dimension: constant spatial extent of the solution} \label{App:A}
+The understanding of a phenomenon, in science, goes through the solution of a model. Very often this task is difficult or even impossible to accomplish without making some hypothesis that simplify the problem. The approach is to reduce the problem to solve simpler equations with fewer degrees of freedom. A good method is to identify the symmetries of the problem, and rewrite the equations in a new set of variables which make them decoupled. So that the dynamic can be solved for independent groups of variables or even be ignored for some of them, reducing the problem to a lower number of variables. For instance, the equations for the tri-dimensional dynamic of the two bodies problem can be written as a system of three independent equations, using the appropriate variables.
+
+For many models this approach is not suitable, as the case of the Gross-Pitaevskii equation for a self-interacting BEC. Another procedure consist of making a posteriori (phenomenological) hypothesis, that let us to deal with a simpler problem with fewer variables. In this work we reduce a 3D Gross-Pitaevskii equation to a 2D equation, assuming that the solution of the 2D equation has the same spatial extent.
+
+The general $d$-dimensional Gross-Pitaevskii equation, with an anisotropic harmonic potential, is written as:
+\begin{equation}
+\imath \hbar \frac{\partial \psi(\textbf{r}, t)}{\partial t} = \left[ - \frac{\hbar^2}{2m} \sum_{i=1}^d \frac{\partial^2}{\partial x_i^2} + \frac{m}{2} \sum_{i=1}^d \omega_i^2 x_i^2 + U_0^{(d)} |\psi(\textbf{r}, t)|^2 \right] \psi(\textbf{r}, t),
+\end{equation}
+where the form of $U_0^{(d)}$ depends on the dimension of the problem; for $d=3$ we have:
+\begin{equation}
+U_0^{(3)} = \frac{4\pi \hbar^2 a_s}{m}.
+\end{equation}
+
+In the Thomas-Fermi approximation, the wave function of a stationary state satisfy the condition
+\begin{equation}
+|\psi_{TF}(\textbf{r})|^2 = \frac{\mu_{TF} - V(\textbf{r})}{U_0^{(d)}} \,\, \mathrm{if} \, \mu_{TF}  > V(\textbf{r})
+\end{equation}
+so, given the external potential, the spatial extent of the system is determined by the chemical potential $\mu_{TF}$. For an anisotropic harmonic potential, the spatial extent of a reduced system will be the same as the complete one if the chemical potential is the same.
+
+Furthermore, in the Thomas-Fermi approximation it is possible to express the coefficient of the self-interaction as a function of the chemical potential, due to the normalization condition of the wave function, namely:
+\begin{equation}
+\begin{split}
+N & = \int_V \mathrm{d}^d \textbf{r} \, |\psi_{TF}(\textbf{r})|^2 \\
+& = \int_V \mathrm{d}^d \textbf{r} \, \frac{1}{U_0^{(d)}} \left[ \mu_{TF} - \frac{m}{2} \sum_{i=1}^d \omega_i^2 x_i^2 \right] \\
+& = \frac{\mu_{TF}}{U_0^{(d)}} \left( \bar{R}_{TF} \right)^d \int_{S_1^{(d)}} \mathrm{d}^d \textbf{r} (1 - \textbf{r}^2) \\ 
+& = \frac{\mu_{TF}}{U_0^{(d)}} \left( \bar{R}_{TF} \right)^d \frac{2\pi^{d/2}}{\Gamma(d/2)} \int_0^1 \mathrm{d}r \, r^{d-1} [1 - r^2] \\
+& = \frac{\mu_{TF}}{U_0^{(d)}} \left( \bar{R}_{TF} \right)^d \frac{2\pi^{d/2}}{\Gamma(d/2)} \left( \frac{1}{d} - \frac{1}{d+2} \right) \\
+& = \frac{\mu_{TF}}{U_0^{(d)}} \left( \bar{R}_{TF} \right)^d \frac{\pi^{d/2}}{\Gamma(d/2 + 2)}
+\end{split}
+\end{equation}
+where $\bar{R}_{TF} = \sqrt{2\mu / m \bar{\omega}^2}$ is the mean Thomas-Fermi radius, $\bar{\omega}^2 = \sqrt[d]{\prod_{i=1}^d \omega_i}$ is the geometric mean of the frequencies and $S_1^{(d)}$ is the $d$-dimensional sphere.
+This give us the formula
+\begin{equation}
+U_0^{(d)} = \frac{\mu_{TF}}{N} \left( \bar{R}_{TF} \right)^d \frac{\pi^{d/2}}{\Gamma(d/2 + 2)},
+\end{equation}
+that for $d=2$ gives
+\begin{equation} \label{eq:self-interaction-2d}
+U_0^{(2)} = \frac{4\sqrt{\pi}}{3} \frac{\mu_{TF}}{N} \left( \bar{R}_{TF} \right)^2.
+\end{equation}
+
+Combining Eq.~\eqref{eq:self-interaction-2d} and the constant of the chemical potential we can reduce the problem from three to two dimension. The resulting equation for the reduced system will be
+\begin{equation}
+\imath \hbar \frac{\partial \psi(\textbf{r}, t)}{\partial t} = \left[ - \frac{\hbar^2}{2m} \sum_{i=1}^2 \frac{\partial^2}{\partial x_i^2} + \frac{m}{2} \sum_{i=1}^2 \omega_i^2 x_i^2 + \frac{4\sqrt{\pi}}{3} \frac{\mu_{TF}}{N} \left( \bar{R}_{TF} \right)^2 |\psi(\textbf{r}, t)|^2 \right] \psi(\textbf{r}, t)
+\end{equation}
