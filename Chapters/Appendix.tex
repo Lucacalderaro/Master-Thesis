@@ -29,17 +29,17 @@ N & = \int_V \mathrm{d}^d \textbf{r} \, |\psi_{TF}(\textbf{r})|^2 \\
 & = \frac{\mu_{TF}}{U_0^{(d)}} \left( \bar{R}_{TF} \right)^d \frac{\pi^{d/2}}{\Gamma(d/2 + 2)}
 \end{split}
 \end{equation}
-where $\bar{R}_{TF} = \sqrt{2\mu / m \bar{\omega}^2}$ is the mean Thomas-Fermi radius, $\bar{\omega}^2 = \sqrt[d]{\prod_{i=1}^d \omega_i}$ is the geometric mean of the frequencies and $S_1^{(d)}$ is the $d$-dimensional sphere.
+where $\bar{R}_{TF} = \sqrt{2\mu_{TF} / m \bar{\omega}^2}$ is the mean Thomas-Fermi radius, $\bar{\omega} = \sqrt[d]{\prod_{i=1}^d \omega_i}$ is the geometric mean of the frequencies and $S_1^{(d)}$ is the $d$-dimensional sphere.
 This give us the formula
 \begin{equation}
 U_0^{(d)} = \frac{\mu_{TF}}{N} \left( \bar{R}_{TF} \right)^d \frac{\pi^{d/2}}{\Gamma(d/2 + 2)},
 \end{equation}
 that for $d=2$ gives
 \begin{equation} \label{eq:self-interaction-2d}
-U_0^{(2)} = \frac{4\sqrt{\pi}}{3} \frac{\mu_{TF}}{N} \left( \bar{R}_{TF} \right)^2.
+U_0^{(2)} = \frac{\pi}{2} \frac{\mu_{TF}}{N} \left( \bar{R}_{TF} \right)^2.
 \end{equation}
 
 Combining Eq.~\eqref{eq:self-interaction-2d} and the constant of the chemical potential we can reduce the problem from three to two dimension. The resulting equation for the reduced system will be
 \begin{equation}
-\imath \hbar \frac{\partial \psi(\textbf{r}, t)}{\partial t} = \left[ - \frac{\hbar^2}{2m} \sum_{i=1}^2 \frac{\partial^2}{\partial x_i^2} + \frac{m}{2} \sum_{i=1}^2 \omega_i^2 x_i^2 + \frac{4\sqrt{\pi}}{3} \frac{\mu_{TF}}{N} \left( \bar{R}_{TF} \right)^2 |\psi(\textbf{r}, t)|^2 \right] \psi(\textbf{r}, t)
+\imath \hbar \frac{\partial \psi(\textbf{r}, t)}{\partial t} = \left[ - \frac{\hbar^2}{2m} \sum_{i=1}^2 \frac{\partial^2}{\partial x_i^2} + \frac{m}{2} \sum_{i=1}^2 \omega_i^2 x_i^2 + \frac{\pi}{2} \frac{\mu_{TF}}{N} \left( \bar{R}_{TF} \right)^2 |\psi(\textbf{r}, t)|^2 \right] \psi(\textbf{r}, t)
 \end{equation}
