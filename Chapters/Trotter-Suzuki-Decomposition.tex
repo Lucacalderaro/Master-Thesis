@@ -133,7 +133,7 @@ The property $S(-x)S(x) = I$ also holds in this case, so we can conclude that th
 \begin{equation} \label{eq:s}
 2s^3 + (1-2s)^3 = 0.
 \end{equation}
-Solving Eq.~\eqref{eq:s}, we obtain $s = \frac{1}{2-\sqrt[3]{2}} = 1.351207$~. Suppose now that $S(x)$ is an approximantion of the time-evolution operator, from time $t=0$ to $t=x$. The right term $S_2(sx)$ on the right-hand side of Eq.~\eqref{eq:fourth-order.a} evolves the system from $t=0$ to $t=sx>x$. The middle-term $S_2((1-2s)x)$ approximates the time evolution from $t=sx$ to $t=sx + (1-2s)x = (1-s)x$. Finally the last term $S_2(sx)$ approximates the evolution from $t=(1-s)x$ to $t=x$. Representing the evolution as in Fig.~\ref{plot:evolution}(a), it is evident that the evolution has a part that goes to the "past". In some cases this can be problematic, for instance when studying the diffusion from a delta peak as initial state. Indeed, in this case there is no past of the initial delta peak state. 
+Solving Eq.~\eqref{eq:s}, we obtain $s = \frac{1}{2-\sqrt[3]{2}} = 1.351207$~. Suppose now that $S(x)$ is an approximation of the time-evolution operator, from time $t=0$ to $t=x$. The right term $S_2(sx)$ on the right-hand side of Eq.~\eqref{eq:fourth-order.a} evolves the system from $t=0$ to $t=sx>x$. The middle-term $S_2((1-2s)x)$ approximates the time evolution from $t=sx$ to $t=sx + (1-2s)x = (1-s)x$. Finally the last term $S_2(sx)$ approximates the evolution from $t=(1-s)x$ to $t=x$. Representing the evolution as in Fig.~\ref{plot:evolution}(a), it is evident that the evolution has a part that goes to the "past". In some cases this can be problematic, for instance when studying the diffusion from a delta peak as initial state. Indeed, in this case there is no past of the initial delta peak state. 
 
 However, this problem can be easely solved by introducing another fourth-order approximant. Following the same idea, we consider
 \begin{equation} \label{eq:fourth-order-nopast}
@@ -147,7 +147,7 @@ Similarly to the $S(x)$ we represent $S_2(x)$ as in Fig.~\ref{plot:fractal-evolu
 \begin{figure}
    \centering
    \includegraphics[width=5cm]{Plots/evolution.eps}
-   \caption{Representation of the fouth-order approximation using (a) Eq.~\eqref{eq:fourth-order} and (b) Eq.~\eqref{eq:fourth-order-nopast}.} \label{plot:evolution}
+   \caption{Representation of the fourth-order approximation using (a) Eq.~\eqref{eq:fourth-order} and (b) Eq.~\eqref{eq:fourth-order-nopast}.} \label{plot:evolution}
 \end{figure}
 
 
@@ -191,7 +191,7 @@ The evolution is simple to calculate analitically: the spin precesses around the
 \begin{equation}
 T = \frac{\pi}{\sqrt{1+\Gamma^2}}.
 \end{equation}
-However, here we use the Trotter approximantion
+However, here we use the Trotter approximation
 \begin{equation} \label{eq:trotter-approximant}
 \exp\left({-\frac{\imath}{\hbar}H \delta t}\right) = \exp\left({-\frac{\imath}{\hbar} \sigma_z \delta t}\right) \exp\left({-\frac{\imath}{\hbar} \Gamma \sigma_x \delta t}\right),
 \end{equation}
@@ -207,5 +207,5 @@ In contrast, the error in the energy monotonically grows in the case of the pert
 \Vert 1 - \frac{\imath}{\hbar} H \Delta t H \Vert \simeq 1 + \Delta t \Vert H \Vert > 1.
 \end{equation}
 
-This simple example shows how the unitarity of the Trotter approximantion improves the quality of the simulation, compared to the perturbation approximantion.
+This simple example shows how the unitarity of the Trotter approximation improves the quality of the simulation, compared to the perturbation approximation.
 
