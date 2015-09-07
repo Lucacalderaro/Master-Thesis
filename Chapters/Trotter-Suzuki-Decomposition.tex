@@ -157,9 +157,14 @@ S_6(x) = S_4(s_4x)^2 S_4((1-4s_4)x) S_4(s_4x)^2,
 \end{equation}
 obtaining
 \begin{equation}
-4s_4^5 + (1-4s_4)^5 = 0,\quad \mathrm{or} \quad s_4 = \frac{1}{4-\sqrt[5]{4}} = 0.373065\ldots .
+4s_4^5 + (1-4s_4)^5 = 0 \quad \mathrm{or} \quad s_4 = \frac{1}{4-\sqrt[5]{4}} = 0.373065\ldots .
 \end{equation}
-We can continue this recursive procedure, ending up with the exact time evolution. It is interesting to note that this recursive procedure creates a fractal pattern composed by back-and-forth evolution, reproducing the exact time evolution.
+We can continue this recursive procedure, ending up with the exact time evolution. It is easy to see that the procedure can be generalized with the following formula:
+\begin{equation}
+S_{2n+2} = S_{2n}(s_{2n}x)^2 S_{2n}((1-4s_{2n})x) S_{2n}(s_{2n}x)^2,
+\end{equation}
+where $s_{2n} = 1/(4-4^{\frac{1}{2n+1}})$.
+It is interesting to note that the recursive procedure creates a fractal pattern composed by back-and-forth evolution, reproducing the exact time evolution.
 \begin{figure}
   \centering
    \includegraphics[width=8cm]{Plots/fractal_evolution.eps}
@@ -187,10 +192,19 @@ and as initial state, the up-spin state
 1 \\ 0
 \end{pmatrix}.
 \end{equation}
-The evolution is simple to calculate analitically: the spin precesses around the axis of the magnetic field $\vec{H} = (\Gamma, 0, 1)$ with the period
+The evolution is simple to calculate analytically: the spin precesses around the axis of the magnetic field $\vec{H} = (\Gamma, 0, 1)$ with the period
 \begin{equation}
 T = \frac{\pi}{\sqrt{1+\Gamma^2}}.
 \end{equation}
+\begin{comment}
+In the basis of the eigenvector of $\sigma_z$, the evolution operator is:
+\begin{equation}
+U(t) = \exp \left( -\frac{\imath t}{\hbar} H \right) = \exp \left( -\frac{\imath t}{\hbar} \right) \begin{pmatrix}
+\cos \left( \frac{\Gamma t}{\hbar} \right) & \imath \sin \left( \frac{\Gamma t}{\hbar} \right) \\
+\imath \sin \left( \frac{\Gamma t}{\hbar} \right) & \cos \left( \frac{\Gamma t}{\hbar} \right) \\
+\end{pmatrix}
+\end{equation}
+\end{comment} 
 However, here we use the Trotter approximation
 \begin{equation} \label{eq:trotter-approximant}
 \exp\left({-\frac{\imath}{\hbar}H \delta t}\right) = \exp\left({-\frac{\imath}{\hbar} \sigma_z \delta t}\right) \exp\left({-\frac{\imath}{\hbar} \Gamma \sigma_x \delta t}\right),
@@ -209,3 +223,107 @@ In contrast, the error in the energy monotonically grows in the case of the pert
 
 This simple example shows how the unitarity of the Trotter approximation improves the quality of the simulation, compared to the perturbation approximation.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Example: symplectic integrator}
+Another interesting example regards the study of chaotic dynamics. In this case it is important to keep the symplecticity of the Hamilton dynamics.
+
+Consider a classical Hamiltonian
+\begin{equation}
+H(\vec{p}, \vec{q}) = K(\vec{p}) + V(\vec{q}),
+\end{equation}
+where $K(\vec{p})$ is the kinetic term and $V(\vec{q})$ the potential term. The Hamilton equation is expressed in the form
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d} t} 
+\left( \begin{matrix}
+\vec{p}(t) \\
+\vec{q}(t)
+\end{matrix} \right)
+= 
+\left( \begin{matrix}
+- \frac{\mathrm{d}}{\mathrm{d} \vec{q}} V(\vec{q}) \\
+\frac{\mathrm{d}}{\mathrm{d} \vec{p}} K(\vec{p})
+\end{matrix} \right)
+\equiv
+\left( \begin{matrix}
+ & - \hat{V} \cdot \\
+\hat{K} \cdot &
+\end{matrix} \right)
+\left( \begin{matrix}
+\vec{p} \\
+\vec{q}
+\end{matrix} \right)
+\end{equation}
+where the operators $\hat{K} \cdot$ and $\hat{V} \cdot$ acts in the following way
+\begin{equation}
+\hat{K} \cdot \vec{p} \equiv \frac{\mathrm{d}}{\mathrm{d} \vec{p}} K(\vec{p}) \quad \mathrm{and} \quad \hat{V} \cdot \vec{q} \equiv \frac{\mathrm{d}}{\mathrm{d} \vec{q}} V(\vec{q}).
+\end{equation}
+We can define the "Hamiltonian" operator as $\mathcal{H} = \mathcal{K} + \mathcal{V}$ with
+\begin{equation}
+\mathcal{K} \equiv \left( \begin{matrix}
+ &  \\
+\hat{K} \cdot &
+\end{matrix} \right)
+\quad \mathrm{and} \quad
+\mathcal{V} \equiv \left( \begin{matrix}
+ &  -\hat{V} \cdot \\
+ &
+\end{matrix} \right)
+\end{equation}
+The two operators, $\mathcal{K}$ and $\mathcal{V}$, do not commute. This make the exponential of $\mathcal{H}$ not easily tractable. However, the exponential of  $\mathcal{K}$ and $\mathcal{V}$ is better manageable.
+
+We notice that $\mathcal{K}^2 = \mathcal{V}^2 = 0$, and therefore we have
+\begin{align}
+\exp \left( \mathcal{K} \Delta t \right) \left( \begin{matrix}
+\vec{p} \\ \vec{q}
+\end{matrix} \right)
+&=
+(I+\mathcal{K}\Delta t) \left( \begin{matrix}
+\vec{p} \\ \vec{q}
+\end{matrix} \right)
+=
+\left( \begin{matrix}
+\vec{p} \\ \vec{q} + \Delta t \frac{\mathrm{d}}{\mathrm{d} \vec{p}} K(\vec{p})
+\end{matrix} \right), \\
+\exp \left( \mathcal{V} \Delta t \right) \left( \begin{matrix}
+\vec{p} \\ \vec{q}
+\end{matrix} \right)
+&= (I+\mathcal{V}\Delta t) \left( \begin{matrix}
+\vec{p} \\ \vec{q}
+\end{matrix} \right)
+=
+\left( \begin{matrix}
+\vec{p} - \Delta t \frac{\mathrm{d}}{\mathrm{d} \vec{q}} V(\vec{q}) \\ \vec{q} 
+\end{matrix} \right).
+\end{align}
+Thus, given the form of $K(\vec{p})$ and $V(\vec{q})$ the Trotter approximation of the evolution operator is determined.
+
+Umeno and Suzuki~\citep{US93,SU93} demonstrated the use of symplectic integrators for chaotic dynamics of the system
+\begin{equation}
+K(\vec{p}) = \frac{1}{2} (p_1^2 + p_2^2) \quad \mathrm{and} \quad V(\vec{q}) = \frac{1}{2} 	q_1^2 q_2^2.
+\end{equation}
+The dynamic is constrained by the constant $\frac{\mathrm{d}}{\mathrm{d} t} |q_1(t) q_2(t)| = 0$, thus tuple $(q_1(t), q_2(t))$ is confined in the area surrounded by four hyperbolas as illustrated in Fig.. The Trotter approximation of the dynamics, gives  the energy fluctuation shown in Fig.. Although the energy deviates from the correct value sometimes, it comes back after the deviation. The majors deviations occur when the system goes into one of the four narrow valleys of the potential, while they are suppressed when the system is in the central area.
+
+Contrary to this behaviour, the perturbation approximation
+\begin{equation}
+\left( \begin{matrix}
+\vec{p} \\ \vec{q}
+\end{matrix} \right) \longrightarrow (I + \Delta t \mathcal{H})
+\left( \begin{matrix}
+\vec{p} \\ \vec{q}
+\end{matrix} \right)
+=
+\left( \begin{matrix}
+\vec{p} - \Delta t \frac{\mathrm{d}}{\mathrm{d} \vec{q}} V(\vec{q}) \\ 
+\vec{q} + \Delta t \frac{\mathrm{d}}{\mathrm{d} \vec{p}} K(\vec{p})
+\end{matrix} \right),
+\end{equation}
+yields the monotonic energy increase shown in Fig.. The reason of the difference between the approximants must be keeping the symplecticity, or the conservation of the phase-space volume.
+\begin{figure}[t]
+\centering
+\begin{tabular}{ccc}
+\subfloat[]{\includegraphics[width=3.7cm]{Plots/configuration-space.eps} \label{plot:configuration-space}} & 
+\subfloat[]{\includegraphics[width=4cm]{Plots/Energy-Trotter-Chaotic.eps} \label{plot:Energy-trotter-chaotic}} & 
+\subfloat[]{\includegraphics[width=4cm]{Plots/Energy-Perturbation-Chaotic.eps} \label{plot:Energy-perturb-chaotic}} \\
+\end{tabular}
+\caption{Evolution of the point in the configuration space, using the Trotter approximation. The initial condition is $p_1 = p_2 = 0$ and $q_1 = 2$, $q_2 = 1$~\ref{plot:configuration-space}. The energy fluctuation due to the Trotter approximation~\ref{plot:Energy-trotter-chaotic}. The energy increase due to the perturbation approximation~\ref{plot:Energy-perturb-chaotic}} \label{plot:Chaotic-system}
+\end{figure}
