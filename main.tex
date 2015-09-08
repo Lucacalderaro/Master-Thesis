@@ -1,5 +1,6 @@
 \RequirePackage[l2tabu,orthodox]{nag}
 \documentclass[11pt]{book}
+\usepackage{calc}
 \usepackage{xcolor}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
@@ -16,31 +17,20 @@
 \usepackage{natbib}
 \newcommand{\markup}[2][red]{\textcolor{#1}{#2}}
 \usepackage{algorithm2e}
+\usepackage{layouts}
+\printinunitsof{cm}
 
-
-
-\title{Large-scale classical simulation of
-quantum system using the Trotter-Suzuki decomposition}
-\author{
-        Luca Calderaro \\
-        e-mail: calderaroluca@gmail.com\\
-        Supervisor: Antonio Acìn\\
-        e-mail: antonio.acin@icfo.es
-        Supervisor: Peter Wittek\\
-        e-mail: peter.wittek@icfo.es
-}
-\date{\today}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
 \frontmatter
 
-\maketitle
+\include{titlepage}
+
 \tableofcontents
 
-
-
 \mainmatter
+\pagevalues
 \include{Chapters/Introduction}
 
 \include{Chapters/Trotter-Suzuki-Decomposition}
