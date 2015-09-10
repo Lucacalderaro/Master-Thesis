@@ -25,10 +25,10 @@ We consider the discretization of the continuum space into a uniform mesh, where
 \frac{\partial^2 \psi}{\partial x^2} \bigg|_{i,j} = \frac{\psi(i+1,j) - 2 \psi(i,j) + \psi(i-1,j)}{\Delta^2} + O(\Delta^2),
 \end{equation}
 Then we can write the Eq.~\eqref{eq:tot_momentum} as
-\begin{equation} \label{eq:discr-tot-momentum}
-\bra{i,j} \frac{1}{2m} \left( P_x^2 + P_y^2 \right) \ket{\psi} = -\frac{\hbar^2}{2m\Delta^2} \left( \psi_{i+1,j} + \psi_{i,j+1} + \psi_{i-1,j} + \psi_{i,j-1} - 4 \psi_{i,j} \right).
+\begin{equation} 
+\bra{i,j} \frac{1}{2m} \left( P_x^2 + P_y^2 \right) \ket{\psi} = -\frac{\hbar^2}{2m\Delta^2} \left( \psi_{i+1,j} + \psi_{i,j+1} + \psi_{i-1,j} + \psi_{i,j-1} - 4 \psi_{i,j} \right). \nonumber
 \end{equation}
-To explicitly determine the matrix elements of the kinetic operator, let us rewrite the Eq.~\eqref{eq:discr-tot-momentum} using Kroneker's delta
+To explicitly determine the matrix elements of the kinetic operator, let us rewrite the previous equation using Kroneker's delta
 \begin{align} \label{eq:delta-k-momentum}
 \bra{i,j} \frac{1}{2m} \left( P_x^2 + P_y^2 \right) \ket{\psi} = & \sum_{k,l} -\frac{\hbar^2}{2m\Delta^2} [ \left(  \delta_{i+1,k} + \delta_{i-1,k} \right) \delta_{j,l} \, +  \\ 
 + &  \left( \delta_{j+1,l} + \delta_{j-1,l} \right) \delta_{i,k} - 4 \delta_{i,k} \delta_{j,l} ] \psi_{k,l}. \nonumber
@@ -113,7 +113,7 @@ it is straightforward to calculate the exponential of the operators $A$ and $B$,
 \end{equation}
 The first exponential in Eq.~\eqref{eq:1approxTS} is also straightforward to calculate. Indeed $\hat{V} \ket{i,j} = V(i,j) \ket{i,j}$ so,
 \begin{equation}
-\bra{k,l} \exp\left(-\frac{\imath t}{\hbar}\left(\hat{V} + \frac{2 \hbar^2}{m \Delta^2} \hat{I}\right) \right) \ket{i,j} = \delta_{k,i} \delta_{l,j} \exp\left( -\frac{\imath t}{\hbar} \left( V(i,j) + \frac{2 \hbar^2}{m \Delta^2} \right) \right)
+\bra{k,l} \exp\left(-\frac{\imath t}{\hbar}\left(\hat{V} + \frac{2 \hbar^2}{m \Delta^2} \hat{I}\right) \right) \ket{i,j} = \delta_{k,i} \delta_{l,j} \exp\left( -\frac{\imath t}{\hbar} \left( V(i,j) + \frac{2 \hbar^2}{m \Delta^2} \right) \right) \nonumber
 \end{equation}
 The second order approximation of Trotter--Suzuki decomposition is easily calculated using $U_1(t)$, namely
 \begin{equation} \label{eq:second-TS-evo-operator}

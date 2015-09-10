@@ -104,7 +104,7 @@ S_2(x) \equiv \exp\left({\frac{x}{2}A}\right) \exp\left({xB}\right) \exp\left({\
 \end{equation}
 The symmetrized approximant has the property
 \begin{align}
-S_2(-x) S_2(x) = \exp\left({-\frac{x}{2}A}\right) \exp\left({-xB}\right) \exp\left({-\frac{x}{2}A}\right) \exp\left({\frac{x}{2}A}\right) \exp\left({xB}\right) \exp\left({\frac{x}{2}A}\right) = I, \nonumber
+S_2(-x) S_2(x) = & \exp\left({-\frac{x}{2}A}\right) \exp\left({-xB}\right) \exp\left({-\frac{x}{2}A}\right) \cdot \nonumber \\ & \exp\left({\frac{x}{2}A}\right) \exp\left({xB}\right) \exp\left({\frac{x}{2}A}\right) = I, \nonumber
 \end{align}
 which proves that $f(x)$ does not have an even-order term in $x$. Consequently, $S_2$ is a second-order approximant, with the following form
 \begin{equation} \label{eq:S2-form}
@@ -141,13 +141,13 @@ S_4(x) = S_2(s_2x)^2 S_2((1-4s_2)x) S_2(s_2x)^2
 \end{equation}
 where $s_2$ is the parameter that solves the equation
 \begin{equation}
-4s_2^3 + (1-4s_2)^3 = 0, or s_2 = \frac{1}{4 - \sqrt[3]{4}}=0.414490\ldots
+4s_2^3 + (1-4s_2)^3 = 0 \quad \mathrm{or} \quad s_2 = \frac{1}{4 - \sqrt[3]{4}}=0.414490\ldots
 \end{equation}
 Similarly to the $S(x)$, we represent $S_2(x)$ as in Fig.~\ref{plot:fractal-evolution}(b). Note that in this case the evolution remains between the initial and final time.
-\begin{figure}
+\begin{figure}[h!]
    \centering
    \includegraphics[width=5cm]{Plots/evolution.eps}
-   \caption{Representation of the fourth-order approximation using (a) Eq.~\eqref{eq:fourth-order} and (b) Eq.~\eqref{eq:fourth-order-nopast}.} \label{plot:evolution}
+   \caption{Representation of the fourth-order approximation using Eq.~\eqref{eq:fourth-order} (Fig.~(a)) and Eq.~\eqref{eq:fourth-order-nopast} (Fig.~(b)). In the Trotter--Suzuki approximation, the $2n$-th order approximation of evolution operator, from $t=0$ to $t=x$ and with $n \geq 1 $, is decomposed in a chain of second-order approximants, that evolve the state back and forth in the time.} \label{plot:evolution}
 \end{figure}
 
 
@@ -168,7 +168,7 @@ It is interesting to note that the recursive procedure creates a fractal pattern
 \begin{figure}
   \centering
    \includegraphics[width=8cm]{Plots/fractal_evolution.eps}
-   \caption{Representation of the time evolution using (a) sixth-order approximant and (b) eighth-order approximant.} \label{plot:fractal-evolution}
+   \caption{Representation of the time evolution using the sixth-order approximant~(a) and the eighth-order approximant~(b).} \label{plot:fractal-evolution}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -325,5 +325,5 @@ yields the monotonic energy increase shown in Fig.~\ref{plot:Energy-perturb-chao
 \subfloat[]{\includegraphics[width=4cm]{Plots/Energy-Trotter-Chaotic.eps} \label{plot:Energy-trotter-chaotic}} & 
 \subfloat[]{\includegraphics[width=4cm]{Plots/Energy-Perturbation-Chaotic.eps} \label{plot:Energy-perturb-chaotic}} \\
 \end{tabular}
-\caption{Evolution of the point in the configuration space, using the Trotter approximation. The initial condition is $p_1 = p_2 = 0$ and $q_1 = 2$, $q_2 = 1$~\ref{plot:configuration-space}. The energy fluctuation due to the Trotter approximation~\ref{plot:Energy-trotter-chaotic}. The energy increase due to the perturbation approximation~\ref{plot:Energy-perturb-chaotic}} \label{plot:Chaotic-system}
+\caption{(Evolution of the point in the configuration space, using the Trotter approximation (a). The initial condition is $p_1 = p_2 = 0$ and $q_1 = 2$, $q_2 = 1$. The energy fluctuation due to the Trotter approximation~(b). The energy increase due to the perturbation approximation~(c).} \label{plot:Chaotic-system}
 \end{figure}

@@ -48,33 +48,52 @@ The most straightforward and simple approach to implement an algorithm, usually 
 
 \noindent \textit{Loop Interchange}. This transformation reverses the order of two adjacent loops in a loop nest. This can be generalized to loop permutations where more than two loops are moved at once~\citep{Kennedy:2001:OCM:502981,Wolfe:1995:HPC:572937}.
 
-A loop interchange can improve locality by reducing the \textit{stride} of an array-based computation. The stride is the distance of array elements in memory accessed within consecutive loop iterations. For instance, suppose we want to calculate the square norm of a vector (Algorithm~\ref{algo:loop-interchange}). Furthermore, suppose that the vector is stored in a 6 by 8 array in memory (Fig.~\ref{fig:interchanged-loop-nests}), in \textit{row major order}; that is, two array elements are stored adjacent in memory if their second indices are consecutive numbers. The code corresponding to the left part of Fig.~\ref{fig:interchanged-loop-nests}, accesses the array elements in a column-wise manner, so the stride is equal to 8. Consequently, the preloaded data in the cache line marked with grey color will not be reused if the array is too large to fit entirely in cache. The next element will be fetched from the main memory. Interchanging the loop nest allows the cache line to be reused, as the stride is now 1 (right part of Fig.~\ref{fig:interchanged-loop-nests}). \\
-\begin{figure}
+A loop interchange can improve locality by reducing the \textit{stride} of an array-based computation. The stride is the distance of array elements in memory accessed within consecutive loop iterations. For instance, suppose we want to calculate the square norm of a vector (Fig.~\ref{algo:loop-interchange}). Furthermore, suppose that the vector is stored in a 6 by 8 array in memory (Fig.~\ref{fig:interchanged-loop-nests}), in \textit{row major order}; that is, two array elements are stored adjacent in memory if their second indices are consecutive numbers. The code corresponding to the left part of Fig.~\ref{fig:interchanged-loop-nests}, accesses the array elements in a column-wise manner, so the stride is equal to 8. Consequently, the preloaded data in the cache line marked with grey color will not be reused if the array is too large to fit entirely in cache. The next element will be fetched from the main memory. Interchanging the loop nest allows the cache line to be reused, as the stride is now 1 (right part of Fig.~\ref{fig:interchanged-loop-nests}). \\
+\begin{figure}[h]
    \centering
    \includegraphics[width=10cm]{Figs/Interchanged_loop_nests.eps}
    \caption{Access pattern for interchenged loop nests in a (6,8) array.} \label{fig:interchanged-loop-nests}
 \end{figure} 
 
-
-\begin{algorithm}[t]
+\begin{figure}[t!]
+\begin{minipage}[t]{6.5cm}
+\null
+\begin{algorithm}[H]
+\caption{Original loop} 
 \SetAlgoLined
 double $norm2$\;
 double $a[n,n]$\;
-//Original loop nest\;
 \For{$j = 1$ \KwTo n }{
 	\For{$i = 1$ \KwTo n }{
 		$norm2 += a[i,j] \cdot a[i,j]$\;	
 	}
 }
-\caption{Loop interchange} \label{algo:loop-interchange}
 \end{algorithm}
-
+\end{minipage}%
+\begin{minipage}[t]{6.5cm}
+\null
+\begin{algorithm}[H]
+\caption{Loop interchange} 
+\SetAlgoLined
+double $norm2$\;
+double $a[n,n]$\;
+\For{$i = 1$ \KwTo n }{
+	\For{$j = 1$ \KwTo n }{
+		$norm2 += a[i,j] \cdot a[i,j]$\;	
+	}
+}
+\end{algorithm}
+\end{minipage}
+\caption{Pseudocode that illustrate the loop interchange transformation.} \label{algo:loop-interchange}
+\end{figure}
 
 \noindent \textit{Loop Fusion}. This transformation takes two adjacent loops that have the same iteration space traversal and combines their bodies into a single loop~\citep{Darte99onthe}.
-When loop fusion can be applied -- when there are no instruction dependencies between the fused loops -- data locality may be improved. Assume that two consecutive loops perform global sweeps through an array as in the code shown in Algorithm~\ref{algo:loop-fusion},
-and that the data are too large to fit entirely in the cache. When the first loop finishes, the elements of array \textit{b} are not completely loaded in cache, and the second loop will have to reload them from the main memory. If the two loops are combined with loop fusion only one global sweep through the array \textit{b} will be performed, resulting in fewer cache misses. \\
-\begin{algorithm}[h]
-//Original loop nest\;
+When loop fusion can be applied -- when there are no instruction dependencies between the fused loops -- data locality may be improved. Assume that two consecutive loops perform global sweeps through an array as in the code shown in Fig.~\ref{algo:loop-fusion}, and that the data are too large to fit entirely in the cache. When the first loop finishes, the elements of array \textit{b} are not completely loaded in cache, and the second loop will have to reload them from the main memory. If the two loops are combined with loop fusion only one global sweep through the array \textit{b} will be performed, resulting in fewer cache misses. \\
+\begin{figure}[h!]
+\begin{minipage}[t]{6cm}
+\null
+\begin{algorithm}[H]
+\caption{Original loop}
 \SetAlgoLined
 \For{$i = 1$ \KwTo n }{
 	$b[i] = a[i] + 1$\;
@@ -82,8 +101,21 @@ and that the data are too large to fit entirely in the cache. When the first loo
 \For{$i = 1$ \KwTo n }{
 	$c[i] = b[i] \cdot 3$\;
 }
-\caption{Loop fusion} \label{algo:loop-fusion}
 \end{algorithm}
+\end{minipage}%
+\begin{minipage}[t]{6cm}
+\null
+\begin{algorithm}[H]
+\caption{Loop fusion}
+\SetAlgoLined
+\For{$i = 1$ \KwTo n }{
+	$b[i] = a[i] + 1$\;
+	$c[i] = b[i] \cdot 3$\;
+}
+\end{algorithm}
+\end{minipage}
+\caption{Pseudocode that illustrate the loop fusion transformation.} \label{algo:loop-fusion}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{CPU Kernels}
@@ -213,16 +245,7 @@ The hybrid kernel uses only one stream to queue the tasks for the GPU. The host 
 \section{Benchmarks}
 To study the scaling pattern of the execution time as the number of nodes vary, we ran benchmarks on the Minotauro cluster at the Barcelona Supercomputing Center. The Minotauro cluster is comprised of 126 compute nodes, where each node has two Intel Xeon E5649 six-core processors with 12~MB of cache memory, clocked at 2.53~GHz, running a Linux operating system with 24~GB of RAM memory. Every node is equipped with two NVIDIA M2090 graphic cards, each one with 512 CUDA cores and 6~GB of GDDR5 memory. The MPI communication across the nodes is through an Infiniband Network. 
 
-The benchmarks ran ten iterations on increasing cluster sizes, using an initial state in a square domain of different lenghts $L$: 4096, 8192, 16384. The dimensions were chosen so as to fill the device memory on cluster sizes 1, 4 and 16 nodes. GPUs have a better performance when the load is higher, whereas CPUs are less sensitive to the load. For this reason, choosing a matrix dimension that fit the GPUs, we get a fair comparison with respect to the CPU kernels due to their insensitivity to the load. Furthermore, this configuration shows how the overall performance decays as the cluster size increases. The times of execution are shown in Table~\ref{tab:bench-time} and they are also plotted in Figs.~\ref{plot:bench-4096}-\ref{plot:bench-16384}.
-The results show only the time taken in the main loop of the evolution, as each kernel takes different amounts of time for initialization.
-
-The CPU kernels show an almost linear scaling: as the cluster size is doubled, the execution time is halved. The communication overhead increases with the cluster size, so eventually the advantage of SSE optimization vanishes with large clusters.
-
-The GPU kernel shows a different scaling pattern. When the device memory is loaded to at least 50\%, the scaling is close to linear, as in the case of CPU kernels. For lower load, the scaling is less efficient, until the execution time of individual GPUs remains almost constant so the curve flattens out. There is little benefit to gain by this kernel in large clusters with a low resolution of the mesh.
-
-The hybrid kernel shows a pattern similar to the GPU. In this configuration, where the matrix size fit the GPU memory, the execution time is slightly longer. The real advantage is in cases where the device memory is insufficient. In such cases, the speedup can be  close to a factor of 2 compared to the CPU kernels.
-
-\begin{table}
+\begin{table}[t!]
 \centering
 \begin{tabular}{*{13}{l}}
 \hline
@@ -253,14 +276,36 @@ Nodes & \multicolumn{4}{l}{Matrix size: $16384$} \\
 \end{tabular} \caption{Execution time.} \label{tab:bench-time}
 \end{table}
 
-\begin{figure}
+The benchmarks ran ten iterations on increasing cluster sizes, using an initial state in a square domain of different lenghts $L$: 4096, 8192, 16384. The dimensions were chosen so as to fill the device memory on cluster sizes 1, 4 and 16 nodes. GPUs have a better performance when the load is higher, whereas CPUs are less sensitive to the load. For this reason, choosing a matrix dimension that fit the GPUs, we get a fair comparison with respect to the CPU kernels due to their insensitivity to the load. Furthermore, this configuration shows how the overall performance decays as the cluster size increases. The times of execution are shown in Table~\ref{tab:bench-time} and they are also plotted in Figs.~\ref{plot:bench-4096}-\ref{plot:bench-16384}.
+The results show only the time taken in the main loop of the evolution, as each kernel takes different amounts of time for initialization.
+
+The CPU kernels show an almost linear scaling: as the cluster size is doubled, the execution time is halved. The communication overhead increases with the cluster size, so eventually the advantage of SSE optimization vanishes with large clusters.
+
+The GPU kernel shows a different scaling pattern. When the device memory is loaded to at least 50\%, the scaling is close to linear, as in the case of CPU kernels. For lower load, the scaling is less efficient, until the execution time of individual GPUs remains almost constant so the curve flattens out. There is little benefit to gain by this kernel in large clusters with a low resolution of the mesh.
+
+The hybrid kernel shows a pattern similar to the GPU. In this configuration, where the matrix size fit the GPU memory, the execution time is slightly longer. The real advantage is in cases where the device memory is insufficient. In such cases, the speedup can be  close to a factor of 2 compared to the CPU kernels.
+%\begin{center}
+\begin{figure}[h!]
+\begin{tabular}{cc}
+\subfloat[]{\includegraphics[width=6cm]{Plots/4096.pdf} \label{plot:bench-4096}} & 
+\subfloat[]{\includegraphics[width=6cm]{Plots/8192.pdf} \label{plot:bench-8192}} \\
+\multicolumn{2}{c}{
+\subfloat[]{\includegraphics[width=6cm]{Plots/16384.pdf} \label{plot:bench-16384}} }
+\end{tabular}
+\caption{Execution time for linear system size: (a) 4096; (b) 8192; (c) 16384.} 
+\end{figure}
+%\end{center}
+
+\begin{comment}
+\begin{figure}[b]
    \centering
-   \includegraphics[width=11cm]{Plots/4096.png}
+   \includegraphics[width=8cm]{Plots/4096.pdf}
    \caption{Execution time for linear system size: 4096.} \label{plot:bench-4096}
 
-   \includegraphics[width=11cm]{Plots/8192.png}
+   \includegraphics[width=8cm]{Plots/4096.pdf}
    \caption{Execution time for linear system size: 8192.} \label{plot:bench-8192}
 
-   \includegraphics[width=11cm]{Plots/16384.png}
+   \includegraphics[width=8cm]{Plots/4096.pdf}
    \caption{Execution time for linear system size: 16384.} \label{plot:bench-16384}
 \end{figure}
+\end{comment}
