@@ -1,4 +1,5 @@
 \chapter{Dark Solitons in Bose-Einstein Condensates}
+\chaptermark{Dark Solitons in BEC}
 As a case study of the code developed, we carried out simulations of the dynamics of a Bose-Einstein condensate (BEC). In particular we reproduced the results of an experimental study performed at the National Institute of Standards and Technology (NIST), in which they investigated the realization and evolution of solitons in a BEC of sodium atoms~\citep{DSF00}. In this chapter we briefly introduce the theoretical background of BEC and dark solitons, and proceed with the illustration of the simulation results, comparing them to the results by NIST.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -183,14 +184,8 @@ In Fig.~\ref{plot:density_5ms}, the particles density profile along the $x$ axis
 \caption{Experimental images of the integrated BEC density ((a) to (e))~\citep{DSF00} and calculated density, from our simulation, ((f) to (j)) for various times after the phase imprinting. A positive density disturbance is created and moves rapidly in the $+x$ direction. A dark soliton is left behind moving in the opposite direction at significantly less than the speed of sound.} \label{plot:density-exp-sim}
 \end{figure}
 
-Since the external potential has a minimum, the soliton is expected to oscillate with a frequency of $\omega_s = \omega_x / \sqrt{2}$. This behaviour was also found by previous simulations~\citep{MLS99,BA98}. In our case, the soliton should stop after one-quarter of the oscillation time: $T_s/4 = \frac{\pi}{\sqrt{2} \omega_x} = 12.6 $~$ \mathrm{ms}$, which is in good agreement with our simulation (Fig.~\ref{plot:soliton-xposition}).
 
-We were able to evaluate a quarter of period of the soliton and not the whole period because after the notch stops it breaks up, becoming rather perturbed (Fig.~\ref{plot:density-breaksup}). This behaviour is found also in the simulations carried out in~\citep{DSF00}. 
-%%%%%%%%%%%%%%%%%%%%%% EXPLAIN WHY THE SOLITON DISAPPEAR %%%%%%%%%%%%%%%
-%I guess this is because a soliton is well defined only on top of a "fat" and rather uniform BEC, while of course at the edges of the cloud the density goes to zero (so the interaction play a vanishing role there), and the density profile also changes very rapidly
-
-In conclusion, though our simulation is based on the solution of the two-dimensional Gross-Pitaevskii equation, we were able to reproduce the results of both their experiment and simulation, which was based on the solution of the 3D Gross-Pitaevskii equation~\citep{DSF00}.
-\begin{figure}[h!]
+\begin{figure}[t]
 \centering
 \begin{tabular}{ccccc}
 \subfloat[$14$ ms]{\includegraphics[width=2cm]{Plots/density_hmap_14ms.pdf} \label{plot:density_sim_14ms}} & 
@@ -200,3 +195,11 @@ In conclusion, though our simulation is based on the solution of the two-dimensi
 \end{tabular}
 \caption{Calculated particles density for various times after the soliton stops. These images show how the soliton breaks up.} \label{plot:density-breaksup}
 \end{figure}
+
+Since the external potential has a minimum, the soliton is expected to oscillate with a frequency of $\omega_s = \omega_x / \sqrt{2}$. This behaviour was also found by previous simulations~\citep{MLS99,BA98}. In our case, the soliton should stop after one-quarter of the oscillation time: $T_s/4 = \frac{\pi}{\sqrt{2} \omega_x} = 12.6 $~$ \mathrm{ms}$, which is in good agreement with our simulation (Fig.~\ref{plot:soliton-xposition}).
+
+We were able to evaluate a quarter of period of the soliton and not the whole period because after the notch stops it breaks up, becoming rather perturbed (Fig.~\ref{plot:density-breaksup}). This behaviour is found also in the simulations carried out in~\citep{DSF00}. 
+%%%%%%%%%%%%%%%%%%%%%% EXPLAIN WHY THE SOLITON DISAPPEAR %%%%%%%%%%%%%%%
+%I guess this is because a soliton is well defined only on top of a "fat" and rather uniform BEC, while of course at the edges of the cloud the density goes to zero (so the interaction play a vanishing role there), and the density profile also changes very rapidly
+
+In conclusion, though our simulation is based on the solution of the two-dimensional Gross-Pitaevskii equation, we were able to reproduce the results of both their experiment and simulation, which was based on the solution of the 3D Gross-Pitaevskii equation~\citep{DSF00}.
