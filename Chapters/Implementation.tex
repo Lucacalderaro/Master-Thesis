@@ -141,7 +141,7 @@ where $\alpha = \frac{\hbar \Delta t}{2m\Delta L^2}$. Note that we discarded the
 In this operation, the sites $(i,j)$ and $(i,j+1)$ in the arrays are updated. We schematically represent this operation by mean of the diagram in Fig.~\ref{fig:scheme-single-iteration}.
 \begin{figure}
    \centering
-   \includegraphics[width=2.5cm]{Figs/Single_couple.png}
+   \includegraphics[width=3.5cm]{Figs/Single_couple.pdf} %2.5
    \caption{Single coupling operation.} \label{fig:scheme-single-iteration}
 \end{figure}
 Note that we do not need to store the exponential operator matrices $\mathrm{e}^{\imath \frac{\alpha}{2} A}$ and $\mathrm{e}^{\imath \frac{\alpha}{2} B}$. It is sufficient to store only two values: $ \cos\left(\frac{\alpha}{2}\right)$ and $\sin\left(\frac{\alpha}{2}\right)$.
@@ -155,7 +155,7 @@ Regarding the imaginary time evolution, Eq.~\eqref{eq:single-coupling-operation}
 \end{align}
 \begin{figure} 
    \centering
-   \includegraphics[width=8cm]{Figs/Single_time_step_evolution.png}
+   \includegraphics[width=8cm]{Figs/Single_time_step_evolution.pdf}
    \caption{Single time step evolution scheme for the second order Trotter--Suzuki.} \label{fig:scheme-iteration}
 \end{figure}
 
@@ -170,8 +170,8 @@ Besides, to perform some computational steps on a block, we need the sites surro
 In a non distributed version of the kernels a single CPU performs the time step evolutions as schematized in Fig.~\ref{fig:scheme-iteration}. Blocks of the array in the main memory, with their own halo, are written in the cache memory. A single time step evolution of the block is performed, writing the results back to the cache. The halo is discarded, while the block is written to the second buffer in the main memory (Fig.~\ref{fig:CPU-cache-optimization}). The multiple step strategy, combined with the tunable block size that depends on the hardware's cache size, puts the algorithm in the family of cache-aware stencil computations~\cite{kamil2006implicit}.
 \begin{figure}
    \centering
-   \includegraphics[width=10cm]{Figs/CPU-cache_optimization.png}
-   \caption{Scheme of the CPU cache optimization. A time step evolution is performed, writing blocks of the first array into the cache.} \label{fig:CPU-cache-optimization}
+   \includegraphics[width=10cm]{Figs/CPU-cache-optimization.pdf}
+   \caption{Scheme of the CPU cache optimization. A time step evolution is performed: a block, in buffer 1, and its halo are written into the cache (a); a time step evolution is performed on the block and the halo in the cache, by the CPU (b); the halo is discarded and only the block is written into the main memory in buffer 2 (c). This operation is performed for each block in buffer 1.} \label{fig:CPU-cache-optimization}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -179,7 +179,7 @@ In a non distributed version of the kernels a single CPU performs the time step 
 As the time step evolution is composed by simple and high parallelizable instructions, an implementation that runs on a GPU gains a high speed-up compare to a CPU kernel. Indeed, GPUs achieve a much high peak performances in certain parallel workloads compared to CPUs, as illustrated in Fig.~\ref{fig:CPU-GPU-computational-power}. This motivated the development of a GPU kernel. In this section, we outline the differences between the CPU and GPU architectures, describing the features of the latter. A description of the non-distributed version of GPU kernel follows.
 \begin{figure}
    \centering
-   \includegraphics[width=10cm]{Figs/CPU-GPU_computational_power.eps}
+   \includegraphics[width=10cm]{Figs/GPU-vs-CPU.pdf}
    \caption{Floating-point operations per second for the CPU and GPU.} \label{fig:CPU-GPU-computational-power}
 \end{figure}
 
@@ -192,16 +192,16 @@ GPUs adopt the so-called \textit{single instruction, multiple thread} architectu
 A warp executes one common instruction at a time, so full efficiency is realized when all 32 threads of a warp agree on their execution path. If threads of a warp diverge via a data-dependent conditional branch, the warp serially executes each branch path taken, disabling threads that are not on that path, and when all paths complete, the threads converge back to the same execution path (Fig.~\ref{fig:warp-instruction}). Branch divergence occurs only within a warp; different warps execute independently regardless of whether they are executing common or disjoint code paths. Consequently, the execution achieve better performance avoiding threads in a warp to branch.
 \begin{figure}
    \centering
-   \includegraphics[width=14cm]{Figs/Warp_instruction.png}
+   \includegraphics[width=12cm]{Figs/Warp_instruction.png}
    \caption{Instance of a warp execution. The left part of the graph illustrates the instructions to be performed by each thread. Each thread execute three instructions; instructions with the same color are identical. The right part of the graph illustrates how the instructions are executed by the threads within a warp. Threads, that execute the same instruction, perform the instruction at the same time. Different instructions are performed on different times. In this example threads are not in the same execution path -- there are at least three different paths -- resulting in a inefficient time performance.} \label{fig:warp-instruction}
 \end{figure}
 
-GPU are easily programmed using CUDA (Compute Unified Device Architecture) an extension of high-level programming language C. CUDA extends C by allowing the programmer to define C functions (kernels) that are executed $N$ times in parallel by N different \textit{CUDA threads}. Each thread is associated to a 3-component vector, so that they can be organized in a 1D, 2D or 3D structure. Groups of threads are collected in \textit{thread blocks}, whose size is dictated by the programmer. However, there is a limit to the number of threads per block, since all threads of a block are expected to reside on the same processor core and must share the limited memory resources of that core. Blocks are organized into a \textit{grid} of thread blocks, which can be one, two or three dimensional.
+GPU are easily programmed using CUDA (Compute Unified Device Architecture) an extension of high-level programming language C. CUDA extends C by allowing the programmer to define C functions (kernels) that are executed N times in parallel by N different \textit{CUDA threads}. Each thread is associated to a 3-component vector, so that they can be organized in a 1D, 2D or 3D structure. Groups of threads are collected in \textit{thread blocks}, whose size is dictated by the programmer. However, there is a limit to the number of threads per block, since all threads of a block are expected to reside on the same processor core and must share the limited memory resources of that core. Blocks are organized into a \textit{grid} of thread blocks, which can be one, two or three dimensional.
 
 A GPU's memory is organized in a hierarchy, as it is also the case for the CPU (Fig.~\ref{fig:GPU-memory-hierarchy}). Closest to the processors there are fast and small registers, in which each thread store a private local memory space. On the next level in the hierarchy, there are \textit{shared memories}. Each thread block has access to a memory space stored on shared memories, which is visible to all the threads of the block. The last level consist in the global memory, accessible by all the threads.
 \begin{figure}
    \centering
-   \includegraphics[width=10cm]{Figs/GPU_memory_hierarchy.eps}
+   \includegraphics[width=12cm]{Figs/GPU-memory-hierarchy.pdf}
    \caption{GPU memory hierarchy.} \label{fig:GPU-memory-hierarchy}
 \end{figure}
 
