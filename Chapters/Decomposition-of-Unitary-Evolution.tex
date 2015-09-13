@@ -1,11 +1,11 @@
 \chapter{Decomposition of Unitary Evolution}
 When it comes to solving differential equations that determine the behaviour of a physical system, an accurate approximation is often needed to find an explicit solution. As we have seen in the previous chapter, a good approach is to use the Trotter--Suzuki approximation. 
 
-In this chapter we are interested in calculating the evolution operator $U(t) = \exp \left( - \frac{\imath t}{\hbar} H \right)$, the solution of the time-dependent Schr\"odinger equation, using the second order Trotter--Suzuki approximation. The Trotter--Suzuki approximation is based on the splitting of the exponent in a sum of operators. Thus, starting from a exponential that is difficult to calculate, we end up with a product of easy-to-calculate exponentials. In the next sections, we discuss how to decompose the Hamiltonian and the eventual calculation of the exponential.
+In this chapter we are interested in calculating the evolution operator $U(t) = \exp \left( - \frac{\imath t}{\hbar} H \right)$, the solution of the time--dependent Schr\"odinger equation, using the second order Trotter--Suzuki approximation. The Trotter--Suzuki approximation is based on the splitting of the exponent in a sum of operators. Thus, starting from a exponential that is difficult to calculate, we end up with a product of easy--to--calculate exponentials. In the next sections, we discuss how to decompose the Hamiltonian and the eventual calculation of the exponential.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Hamiltonian Decomposition}
-We consider a single quantum particle in two dimensions in time-independent potential. The Hamiltonian operator of such system is written as follows
+We consider a single quantum particle in two dimensions in time--independent potential. The Hamiltonian operator of such system is written as follows
 \begin{equation} \label{eq:hamiltonian-implementation}
 \hat{H} = \frac{\hat{P}_x^2 + \hat{P}_y^2}{2m} + \hat{V},
 \end{equation}
@@ -20,7 +20,7 @@ We use the coordinate reppresentation of the operators, so the kinetic term beco
 \end{subequations}
 In this basis, the exponentiation of the external potential operator is straightforward, since it is diagonal. On the contrary, this is not true for the kinetic operator.
 
-We consider the discretization of the continuum space into a uniform mesh, where $\Delta$ is the distance between any two consecutive points. We use the tuple $(i,j)$ to label the points of the mesh, with $i,j = 1,\ldots , N$, so that $\psi(x,y) \rightarrow \psi_{i,j}$ and $\ket{x,y} \rightarrow \ket{i,j}$. Using the second-order derivative central difference, we have:
+We consider the discretization of the continuum space into a uniform mesh, where $\Delta$ is the distance between any two consecutive points. We use the tuple $(i,j)$ to label the points of the mesh, with $i,j = 1,\ldots , N$, so that $\psi(x,y) \rightarrow \psi_{i,j}$ and $\ket{x,y} \rightarrow \ket{i,j}$. Using the second--order derivative central difference, we have:
 \begin{equation} \label{eq:second-order-derivative}
 \frac{\partial^2 \psi}{\partial x^2} \bigg|_{i,j} = \frac{\psi(i+1,j) - 2 \psi(i,j) + \psi(i-1,j)}{\Delta^2} + O(\Delta^2),
 \end{equation}
@@ -122,7 +122,7 @@ The second order approximation of Trotter--Suzuki decomposition is easily calcul
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Evolution Towards the Ground-state}
-A reliable and easily-implemented method of approximating the ground state of the
+A reliable and easily--implemented method of approximating the ground state of the
 system is by propagation in imaginary time. Consider the Schr\"odinger equation
 \begin{equation}
 \imath \hbar \frac{\partial \ket{\psi(t)}}{\partial t} = \hat{H} \ket{\psi(t)}.
@@ -139,7 +139,7 @@ where $\hat{H} \ket{\phi_i} = E_i \phi_i$ for $i = 0,1,2,\ldots$~. In this basis
 \begin{equation}
 \ket{\psi(\tau)} = \sum_i c_i \exp\left( -\frac{\tau}{\hbar} E_i \right) \ket{\phi_i}.
 \end{equation}
-Taking $E_0$ as the ground-state energy, we can rearrange the previous equation
+Taking $E_0$ as the ground--state energy, we can rearrange the previous equation
 \begin{equation} \label{eq:imag-evolution}
 \ket{\psi(\tau)} = \exp \left( -\frac{\tau}{\hbar} E_0 \right) \sum_i c_i  \exp\left( -\frac{\tau}{\hbar} \Delta E_i \right) \ket{\phi_i}.
 \end{equation}

@@ -1,14 +1,14 @@
-\chapter{Dark Solitons in Bose-Einstein Condensates}
+\chapter{Dark Solitons in Bose--Einstein Condensates}
 \chaptermark{Dark Solitons in BEC}
-As a case study of the code developed, we carried out simulations of the dynamics of a Bose-Einstein condensate (BEC). In particular we reproduced the results of an experimental study performed at the National Institute of Standards and Technology (NIST), in which they investigated the realization and evolution of solitons in a BEC of sodium atoms~\citep{DSF00}. In this chapter we briefly introduce the theoretical background of BEC and dark solitons, and proceed with the illustration of the simulation results, comparing them to the results by NIST.
+As a case study of the code developed, we carried out simulations of the dynamics of a Bose--Einstein condensate (BEC). In particular we reproduced the results of an experimental study performed at the National Institute of Standards and Technology (NIST), in which they investigated the realization and evolution of solitons in a BEC of sodium atoms~\citep{DSF00}. In this chapter we briefly introduce the theoretical background of BEC and dark solitons, and proceed with the illustration of the simulation results, comparing them to the results by NIST.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Theoretical Background}
-The dynamics of a weakly interacting Bose-Einstein condensate may be described by a nonlinear Schr\"odinger equation, namely, the Gross-Pitaevskii equation~\citep{pethick2002bose,DGPS99,LSA12}. Suppose we have a N-particle system, comprised of bosons interacting with each other. Using the Hartree approximation, we write the many-body wave function as
+The dynamics of a weakly interacting Bose--Einstein condensate may be described by a nonlinear Schr\"odinger equation, namely, the Gross--Pitaevskii equation~\citep{pethick2002bose,DGPS99,LSA12}. Suppose we have a N--particle system, comprised of bosons interacting with each other. Using the Hartree approximation, we write the many--body wave function as
 \begin{equation}
 \psi(\textbf{r}_1, \textbf{r}_2,\ldots, \textbf{r}_N) = \prod_{i=1}^N \phi(\textbf{r}_i),
 \end{equation}
-where the single-particle wave function $\phi(\textbf{r}_i)$ is normalized in the usual way,
+where the single--particle wave function $\phi(\textbf{r}_i)$ is normalized in the usual way,
 \begin{equation}
 \int \mathrm{d}\textbf{r} \, |\phi(\textbf{r})|^2 = 1.
 \end{equation} 
@@ -41,14 +41,14 @@ where the Lagrangian $L$ is given by
 \begin{equation}
 L = \int \mathrm{d} \textbf{r} \, \left[ \frac{\imath \hbar}{2} \left( \psi^\ast \frac{\partial \psi}{\partial t} - \psi \frac{\partial \psi^\ast}{\partial t} \right) - \varepsilon \right].
 \end{equation}
-Requiring that the variation of the independent variables $\psi(\textbf{r},t)$ and $\psi^\ast (\textbf{r},t)$ vanishes at $t=t_1$ and $t=t_2$, and on any spatial boundaries, from Eq.~\eqref{eq:least-principle} one finds the Gross-Pitaevskii equation:
+Requiring that the variation of the independent variables $\psi(\textbf{r},t)$ and $\psi^\ast (\textbf{r},t)$ vanishes at $t=t_1$ and $t=t_2$, and on any spatial boundaries, from Eq.~\eqref{eq:least-principle} one finds the Gross--Pitaevskii equation:
 \begin{equation} \label{eq:gross-pitaevskii}
 \imath \hbar \frac{\partial \psi(\textbf{r}, t)}{\partial t} = \left[ - \frac{\hbar^2}{2m} \nabla^2 + V(\textbf{r}) + U_0 |\psi(\textbf{r}, t)|^2 \right] \psi(\textbf{r}, t).
 \end{equation}
 
 Formally, Eq.~\eqref{eq:gross-pitaevskii} is not implemented in our code since the Hamiltonian is not simply comprised of a kinetic term and an external potential term. However, if we denote $\tilde{V}(\textbf{r}, \psi(\textbf{r}, t)) = V(\textbf{r}) + U_0 |\psi(\textbf{r}, t)|^2$, the single time step evolution still has the form~\eqref{eq:single-iteration} and the exponential operator $\exp \left( - \frac{\imath}{\hbar} \tilde{V}(\textbf{r}, \psi(\textbf{r}, t)) \right)$ is still diagonal in the coordinate representation. Thus, we only have to define the potential such that, in the computational step 5 (Fig.~\ref{fig:scheme-iteration}), each site $(i,j)$ is also multiplied by the factor $\exp(-\frac{\imath}{\hbar} U_0 |\psi(i,j)|^2)$ where $\psi(i,j)$ is the wave function calculated in the previous computational step.
 
-The ground-state of the system may be found numerically using the imaginary time evolution. However, for sufficiently large number of atoms an accurate expression is obtained using the Thomas-Fermi approximation. Suppose that the contribution of the kinetic energy term is negligible with respect to the one of the interaction terms. Then the ground-state is approximated by the solution of the time independent Gross-Pitaevskii equation deprived of the kinetic term
+The ground--state of the system may be found numerically using the imaginary time evolution. However, for sufficiently large number of atoms an accurate expression is obtained using the Thomas--Fermi approximation. Suppose that the contribution of the kinetic energy term is negligible with respect to the one of the interaction terms. Then the ground--state is approximated by the solution of the time independent Gross--Pitaevskii equation deprived of the kinetic term
 \begin{equation}
 \left[ V(\textbf{r}) + U_0 |\psi(\textbf{r})|^2 \right] \psi(\textbf{r}) = \mu_{TF} \psi(\textbf{r}),
 \end{equation}
@@ -62,15 +62,15 @@ For a BEC trapped in a harmonic potential of the form
 \begin{equation}
 V(x,y) = \frac{m}{2} (\omega_1^2 x^2 + \omega_2^2 y^2)
 \end{equation}
-the extension of the condensate wave function in the two directions is given by the two semi-axes
+the extension of the condensate wave function in the two directions is given by the two semi--axes
 \begin{equation} \label{eq:TF-radius}
 R_i = \sqrt{\frac{2\mu_{TF}}{m\omega_i^2}}, \quad i = 1,2 ,
 \end{equation}
 and the particles density has the form of an inverted parabola. Given the normalization condition in Eq.~\eqref{eq:normalization-N}, the chemical potential is determined as a function of $U_0$ and the system dimension (see Appendix~\ref{App:A}).
 
-The Thomas-Fermi approximation gives an accurate description of the bulk properties of the system, but it fails near the edge of the cloud. Provided that $V(\textbf{r})$ varies slowly, a better solution for the ground state may be found solving the entire time independent Gross-Pitaevskii equation taking the linear term of the external potential at the edge of the cloud~\citep{pethick2002bose}.
+The Thomas--Fermi approximation gives an accurate description of the bulk properties of the system, but it fails near the edge of the cloud. Provided that $V(\textbf{r})$ varies slowly, a better solution for the ground state may be found solving the entire time independent Gross--Pitaevskii equation taking the linear term of the external potential at the edge of the cloud~\citep{pethick2002bose}.
 
-The Gross-Pitaevskii equation has exact analytical solutions in the nonlinear regime. These solutions have the form of solitary waves, called solitons, which are localized disturbances that propagate without changing of form~\citep{RC97,JKP98,DCLZ98,ZPMW99}. This phenomenon is due to the balance between dispersion and nonlinearity, which in Eq.~\eqref{eq:gross-pitaevskii} correspond to the kinetic term and the nonlinear interaction, respectively. Solitons appear in different contexts of science and engineering, such as the dynamics of waves in shallow water~\citep{B88}, transport along DNA and other macromolecules~\citep{P95}, and fiber optic communications~\citep{H90}.
+The Gross--Pitaevskii equation has exact analytical solutions in the nonlinear regime. These solutions have the form of solitary waves, called solitons, which are localized disturbances that propagate without changing of form~\citep{RC97,JKP98,DCLZ98,ZPMW99}. This phenomenon is due to the balance between dispersion and nonlinearity, which in Eq.~\eqref{eq:gross-pitaevskii} correspond to the kinetic term and the nonlinear interaction, respectively. Solitons appear in different contexts of science and engineering, such as the dynamics of waves in shallow water~\citep{B88}, transport along DNA and other macromolecules~\citep{P95}, and fiber optic communications~\citep{H90}.
 Depending on the details of the governing nonlinear equation, they can be either bright or dark. The former are peaks in the amplitude, while the latter are notches with a characteristic phase step across. In the present work we focus on dark solitons. 
 
 For BEC with repulsive interaction between the atoms, solitons present a depression in the density profile -- a dark soliton. In a homogeneous BEC, the resulting density profile along the $x$ axis is
@@ -96,7 +96,7 @@ Remarkably, the motion of a soliton in a BEC in an external potential is the sam
 \section{Soliton Simulation}
 In the experiments carried out in Ref.~\citep{DSF00}, the generation and propagation of solitons were studied in BEC of sodium atoms, confined in a magnetic trap. The magnetic trap generated a harmonic external potential with frequencies $\omega_x = \sqrt{2}\omega_y = 2 \omega_z = 2 \pi \cdot 28$~Hz, while the system were composed by  $1.7 (\pm 0.3) \cdot 10^6$ atoms in the $3S_{1/2}$, $F=1$, $m_F=-1$ state. In this configuration the scattering length is $2.75$~nm~\citep{DSF00}. 
 
-In this experiment, the system is three-dimensional, while our implementation is designed for a two-dimensional system. This would not be a problem if the dynamics of the 3D system was described by three decoupled equations, so that we could independently solve the two corresponding to the variables that span a 2D plane and ignore the other one. The Gross-Pitaevskii equation \eqref{eq:gross-pitaevskii} cannot be decoupled due to the non linear term, so this does not apply to our case. However, our purpose is to study the evolution of a soliton which propagates in one dimension, so we can ignore the dynamic along one of the two dimensions perpendicular to the axis of propagation. An approach to reduce to a two dimensional problem is to make a phenomenological hypothesis about the form of the solution. In the literature~\citep{JKP98,SZ98,Sal01,SPR02,MM03}, one can find several methods to reduce a 3D problem to a 2D one; we adopt the method described in~\citep{PietroMassignan}. The condition is that the solution of the reduced system has the same spatial extent of the original one. Since the 3D system is well described by the Thomas-Fermi approximation\footnote{The experimental configuration satisfies the conditions to adopt the Thomas-Fermi approximation, namely the BEC is close to the ground state with a large number of atoms, so that kinetic energy term is by far lower than the interaction energy term}, the extension of the ground state is known (Eq.~\eqref{eq:TF-radius}). Then, the approach is to rewrite the coupling constant $U_0^{(2)}$ for the 2D system, such that the chemical potential for the 2D system is the same as the one of the 3D system. This will ensure that the spatial extension of the 2D system will be the same as the 3D system (see Appendix~\ref{App:A}). For our simulation we reduced the dimension keeping the $x$ and $y$ axes of the 3D system. The resulting Gross-Pitaevskii equation for the 2D system becomes:
+In this experiment, the system is three--dimensional, while our implementation is designed for a two--dimensional system. This would not be a problem if the dynamics of the 3D system was described by three decoupled equations, so that we could independently solve the two corresponding to the variables that span a 2D plane and ignore the other one. The Gross--Pitaevskii equation \eqref{eq:gross-pitaevskii} cannot be decoupled due to the non linear term, so this does not apply to our case. However, our purpose is to study the evolution of a soliton which propagates in one dimension, so we can ignore the dynamic along one of the two dimensions perpendicular to the axis of propagation. An approach to reduce to a two dimensional problem is to make a phenomenological hypothesis about the form of the solution. In the literature~\citep{JKP98,SZ98,Sal01,SPR02,MM03}, one can find several methods to reduce a 3D problem to a 2D one; we adopt the method described in~\citep{PietroMassignan}. The condition is that the solution of the reduced system has the same spatial extent of the original one. Since the 3D system is well described by the Thomas--Fermi approximation\footnote{The experimental configuration satisfies the conditions to adopt the Thomas--Fermi approximation, namely the BEC is close to the ground state with a large number of atoms, so that kinetic energy term is by far lower than the interaction energy term}, the extension of the ground state is known (Eq.~\eqref{eq:TF-radius}). Then, the approach is to rewrite the coupling constant $U_0^{(2)}$ for the 2D system, such that the chemical potential for the 2D system is the same as the one of the 3D system. This will ensure that the spatial extension of the 2D system will be the same as the 3D system (see Appendix~\ref{App:A}). For our simulation we reduced the dimension keeping the $x$ and $y$ axes of the 3D system. The resulting Gross--Pitaevskii equation for the 2D system becomes:
 \begin{equation} \label{eq:gross-pitaevskii-simulation}
 \imath \hbar \frac{\partial \psi(\textbf{r}, t)}{\partial t} = \left[ \sum_{i=1}^2 \left( -\frac{\hbar^2}{2m} \frac{\partial^2}{\partial x_i^2} + \frac{m}{2} \omega_i^2 x_i^2 \right) + U_0^{(2)} |\psi(\textbf{r}, t)|^2 \right] \psi(\textbf{r}, t),
 \end{equation}
@@ -104,19 +104,19 @@ where
 \begin{equation}
 U_0^{(2)} = \frac{\pi}{2} \frac{\mu_{TF}}{N} \left( \bar{R}_{TF} \right)^2 ,
 \end{equation}
-with $\bar{R}_{TF} = \sqrt{2\mu_{TF} / m \bar{\omega}^2}$ being the mean Thomas-Fermi radius, $\bar{\omega} = \sqrt{ \omega_x \omega_y}$ the geometric mean of the frequencies,
-and $\mu_{TF}$ is the chemical potential in the Thomas-Fermi approximation for the 3D system given by
+with $\bar{R}_{TF} = \sqrt{2\mu_{TF} / m \bar{\omega}^2}$ being the mean Thomas--Fermi radius, $\bar{\omega} = \sqrt{ \omega_x \omega_y}$ the geometric mean of the frequencies,
+and $\mu_{TF}$ is the chemical potential in the Thomas--Fermi approximation for the 3D system given by
 \begin{equation}
 \mu_{TF} = \frac{1}{2} \left( 15 N \hbar^2 \omega_x \omega_y \omega_z \sqrt{m} a_s \right)^{2/5}
 \end{equation}
 \\
 
-\noindent \textbf{Ground state.} According to the experiment, the BEC is initially described by the ground state  of Eq.~\eqref{eq:gross-pitaevskii}. They found it to have a spatial extension described by the Thomas-Fermi diameters of $2R_{TF, x} = 45$~$\mathrm{\mu m}$, $2R_{TF, y} = 64 $~$ \mathrm{\mu m}$ and $2R_{TF, z} = 90 $~$ \mathrm{\mu m}$, with a uniform phase~\citep{DGPS99}.
+\noindent \textbf{Ground state.} According to the experiment, the BEC is initially described by the ground state  of Eq.~\eqref{eq:gross-pitaevskii}. They found it to have a spatial extension described by the Thomas--Fermi diameters of $2R_{TF, x} = 45$~$\mathrm{\mu m}$, $2R_{TF, y} = 64 $~$ \mathrm{\mu m}$ and $2R_{TF, z} = 90 $~$ \mathrm{\mu m}$, with a uniform phase~\citep{DGPS99}.
 In the simulation, we approximated the ground state of Eq.~\eqref{eq:gross-pitaevskii-simulation} using imaginary time evolution. We proceeded by taking a Gaussian initial state, evolving it in imaginary time for a fixed number of iterations and then calculating the energy of the resulting state. Repeating this procedure using as initial state the one resulting from the last iteration, the energy decreases converging to the ground state energy. If we call $E_i$ the energy of the state resulting from the iteration $i$, we stopped the procedure once the $i-$th state satisfied the convergence condition
 \begin{equation}
 \left| \frac{E_{i} - E_{i-1}}{E_{i-1}} \right| < 10^{-6}.
 \end{equation}
-This ensure that the $i-$th state is an accurate approximation of the ground state. In Fig.~\ref{plot:density_x} and Fig.~\ref{plot:density_y} the profiles of the particle density along the two axes are shown. The particles density of the calculated ground state is in good agreement with the particles density of the Thomas-Fermi approximation and with the experimental results.
+This ensure that the $i-$th state is an accurate approximation of the ground state. In Fig.~\ref{plot:density_x} and Fig.~\ref{plot:density_y} the profiles of the particle density along the two axes are shown. The particles density of the calculated ground state is in good agreement with the particles density of the Thomas--Fermi approximation and with the experimental results.
 %try to put the images side-by-side
 \begin{figure}[t!]
    \centering
@@ -124,11 +124,11 @@ This ensure that the $i-$th state is an accurate approximation of the ground sta
       \subfloat[]{\includegraphics[width=8.5cm]{Plots/density_profile_x.pdf} \label{plot:density_x}} \\
       \subfloat[]{\includegraphics[width=8.5cm]{Plots/density_profile_y.pdf} \label{plot:density_y}} \\
    \end{tabular}
-   \caption{Calculated ground-state density along the $x$ axis (a) and the $y$ axis (b). The simulation is in good agreement with the Thomas-Fermi approximation. The spatial extension of the  calculated ground state corresponds to the experimental results, where $R_{TF,x} =  45 $~$ \mathrm{\mu m}$ and $2R_{TF, y} = 64$~$ \mathrm{\mu m}$.}
+   \caption{Calculated ground--state density along the $x$ axis (a) and the $y$ axis (b). The simulation is in good agreement with the Thomas--Fermi approximation. The spatial extension of the  calculated ground state corresponds to the experimental results, where $R_{TF,x} =  45 $~$ \mathrm{\mu m}$ and $2R_{TF, y} = 64$~$ \mathrm{\mu m}$.}
 \end{figure}
 \\
 
-\noindent \textbf{Soliton propagation.} Solitons can be generated in BEC by phase imprinting. The phase of the ground state is modified by exposing the cloud to pulsed, off-resonant laser light with an intensity pattern $I(x,y)$. The wave function acquires a corresponding phase $\phi(x,y)$ proportional to $I(x,y)$ and the time of exposure $T$. According to the experiment, they chose $T$ to be short enough so that the atomic motion was negligible (Raman-Nath regime). In this condition, the effect of the pulse can be expressed as a sudden phase imprint, $\psi \rightarrow \psi \exp(\imath \phi(x,y))$~\citep{DSF00}. If the center of the BEC correspond to the origin of the axes, the phase imprint performed in~\citep{DSF00} can be approximated as
+\noindent \textbf{Soliton propagation.} Solitons can be generated in BEC by phase imprinting. The phase of the ground state is modified by exposing the cloud to pulsed, off--resonant laser light with an intensity pattern $I(x,y)$. The wave function acquires a corresponding phase $\phi(x,y)$ proportional to $I(x,y)$ and the time of exposure $T$. According to the experiment, they chose $T$ to be short enough so that the atomic motion was negligible (Raman--Nath regime). In this condition, the effect of the pulse can be expressed as a sudden phase imprint, $\psi \rightarrow \psi \exp(\imath \phi(x,y))$~\citep{DSF00}. If the center of the BEC correspond to the origin of the axes, the phase imprint performed in~\citep{DSF00} can be approximated as
 \begin{equation}
 \phi(x,y) = \frac{\phi_0}{2} \left[1 + \tanh\left(\frac{x}{l}\right)\right],
 \end{equation}
@@ -196,10 +196,10 @@ In Fig.~\ref{plot:density_5ms}, the particles density profile along the $x$ axis
 \caption{Calculated particles density for various times after the soliton stops. These images show how the soliton breaks up.} \label{plot:density-breaksup}
 \end{figure}
 
-Since the external potential has a minimum, the soliton is expected to oscillate with a frequency of $\omega_s = \omega_x / \sqrt{2}$. This behaviour was also found by previous simulations~\citep{MLS99,BA98}. In our case, the soliton should stop after one-quarter of the oscillation time: $T_s/4 = \frac{\pi}{\sqrt{2} \omega_x} = 12.6 $~$ \mathrm{ms}$, which is in good agreement with our simulation (Fig.~\ref{plot:soliton-xposition}).
+Since the external potential has a minimum, the soliton is expected to oscillate with a frequency of $\omega_s = \omega_x / \sqrt{2}$. This behaviour was also found by previous simulations~\citep{MLS99,BA98}. In our case, the soliton should stop after one--quarter of the oscillation time: $T_s/4 = \frac{\pi}{\sqrt{2} \omega_x} = 12.6 $~$ \mathrm{ms}$, which is in good agreement with our simulation (Fig.~\ref{plot:soliton-xposition}).
 
 We were able to evaluate a quarter of period of the soliton and not the whole period because after the notch stops it breaks up, becoming rather perturbed (Fig.~\ref{plot:density-breaksup}). This behaviour is found also in the simulations carried out in~\citep{DSF00}. 
 %%%%%%%%%%%%%%%%%%%%%% EXPLAIN WHY THE SOLITON DISAPPEAR %%%%%%%%%%%%%%%
 %I guess this is because a soliton is well defined only on top of a "fat" and rather uniform BEC, while of course at the edges of the cloud the density goes to zero (so the interaction play a vanishing role there), and the density profile also changes very rapidly
 
-In conclusion, though our simulation is based on the solution of the two-dimensional Gross-Pitaevskii equation, we were able to reproduce the results of both their experiment and simulation, which was based on the solution of the 3D Gross-Pitaevskii equation~\citep{DSF00}.
+In conclusion, though our simulation is based on the solution of the two--dimensional Gross--Pitaevskii equation, we were able to reproduce the results of both their experiment and simulation, which was based on the solution of the 3D Gross--Pitaevskii equation~\citep{DSF00}.
