@@ -13,15 +13,18 @@ In this work we developed a solver for Schr\"odinger equation that scales to	mas
 
 We extended the code implementing the following features:
 \begin{itemize}
-\item The Hamiltonian includes the stationary external potential. The implementation is also able to solve the nonlinear Schr\"odinger equation, in which the nonlinear term is given by the delta-function interactions between bosonic particles -- this is implemented in the CPU kernel.
+\item The Hamiltonian includes the stationary external potential. The implementation is also able to solve the nonlinear Schr\"odinger equation, in which the nonlinear term is given by the delta-function interactions between bosonic particles -- this is currently only implemented in the CPU kernel.
 
 \item Imaginary time evolution to approximate the ground state.
 
 \item Command-line interface and application programming interface for flexible use.
 
 \item Python and MATLAB wrappers are provided.
+
+\item Unit testing framework was implemented.
+
 \end{itemize}
-The new version of the program has been already published and appears in a short paper\footnote{Wittek, P. and Calderaro, L., Extended computational kernels in a massively parallel implementation of the Trotter--Suzuki approximation, Computer Physics Communications, August 2015.}. \textbf{The paper is appended at the end of this thesis}.
+The new version of the program has been already published and appears in a short paper: [Wittek, P. and Calderaro, L., Extended computational kernels in a massively parallel implementation of the Trotter--Suzuki approximation, Computer Physics Communications, August 2015.]. \textbf{The paper is appended at the end of this thesis}.
 
 As an application of the extended implementation, we have been able to simulate the evolution of an interacting Bose-Einstein condensate described by the Gross-Pitaevskii equation. The simulation reproduced the experimental results in Ref.~\citep{DSF00}.
 
