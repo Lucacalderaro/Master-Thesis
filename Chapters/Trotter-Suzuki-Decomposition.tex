@@ -5,7 +5,7 @@ The Trotter product formula for the exponential of two not necessarily commuting
 \begin{equation} \label{eq:trotter}
 \exp{(A+B)} = \lim_{n\rightarrow\infty} \left(\exp\left({\frac{A}{n}}\right) \exp{\left(\frac{B}{n}\right)}\right)^n.
 \end{equation}
-The Trotter-Kato theorem defines the properties that the operators $A$ and $B$ must satisfy for the Eq.~\eqref{eq:trotter} to hold~\cite{KatoTosio1978}. In the simplest case, $A$ and $B$ can be seen as arbitrary $n\times n$ real or complex matrices, and  Eq.~\eqref{eq:trotter} reduces to the Lie product formula~\cite{SophusLie1888}. The exponential of a generic operator is usually difficult to calculate, but whenever this operator can be expressed as a sum of two operators $A$ and $B$, with easy to calculate exponentials, Eq.~\eqref{eq:trotter} provides a method to estimate $\exp{(A+B)}$. However, for practical purposes, this formula is not appropriate, since it requires to take the limit in $n$ to infinity. On a practical side, we could calculate the right-hand side of the equation only for a finite value of $n$, leading to an approximation of the original problem. At this point, it becomes important to study what can be an efficient approximation of the exponential, and how to estimate the error.
+The Trotter--Kato theorem defines the properties that the operators $A$ and $B$ must satisfy for the Eq.~\eqref{eq:trotter} to hold~\cite{KatoTosio1978}. In the simplest case, $A$ and $B$ can be seen as arbitrary $n\times n$ real or complex matrices, and  Eq.~\eqref{eq:trotter} reduces to the Lie product formula~\cite{SophusLie1888}. The exponential of a generic operator is usually difficult to calculate, but whenever this operator can be expressed as a sum of two operators $A$ and $B$, with easy to calculate exponentials, Eq.~\eqref{eq:trotter} provides a method to estimate $\exp{(A+B)}$. However, for practical purposes, this formula is not appropriate, since it requires to take the limit in $n$ to infinity. On a practical side, we could calculate the right-hand side of the equation only for a finite value of $n$, leading to an approximation of the original problem. At this point, it becomes important to study what can be an efficient approximation of the exponential, and how to estimate the error.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exponential Operators in Physics}
@@ -49,7 +49,7 @@ and the Hubbard model,
 \begin{equation} \label{eq:Hubbard}
 H = -t \sum_{\sigma = \uparrow ,\downarrow} \sum_{\langle i,j \rangle} (c_{i\sigma}^\dagger c_{j\sigma} + c_{j\sigma}^\dagger c_{i\sigma}) + U\sum_i n_{i\uparrow} n_{i\downarrow} .
 \end{equation}
-In the first example \eqref{eq:ising}, the quantization axis of the first term is the spin z axis, while that of the second term is the spin $x$ axis. The two terms are therefore mutually non-commutative. In the second example \eqref{eq:Hubbard}, the first term is diagonalizable in the momentum space, whereas the second term is diagonalizable in the coordinate space. In both examples, each term is easily diagonalizable. Since one quantization axis is different from the other, the diagonalization of the sum of the terms becomes difficult.
+In the first example \eqref{eq:ising}, the quantization axis of the first term is the spin $z$ axis, while that of the second term is the spin $x$ axis. The two terms are therefore mutually non-commutative. In the second example \eqref{eq:Hubbard}, the first term is diagonalizable in the momentum space, whereas the second term is diagonalizable in the coordinate space. In both examples, each term is easily diagonalizable. Since one quantization axis is different from the other, the diagonalization of the sum of the terms becomes difficult.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exponential Product Approximation}
@@ -63,7 +63,7 @@ where $A$ and $B$ are arbitrary general operators with some commutation relation
 \begin{equation}
 \exp\left({xB}\right)\exp\left({xA}\right) = \exp\left({x(A+B) + O(x^2)}\right).
 \end{equation}
-We can calculate the form of the correction terms that appears in the exponent of the right-hand side by exploiting a Taylor expansion of both sides of the Eq.~\eqref{eq:approxexp}.
+We can calculate the form of the correction terms that appears in the exponent of the right-hand side by exploiting a Taylor expansion of both sides of Eq.~\eqref{eq:approxexp}.
 \begin{align}  \label{eq:taylor-left}
 \exp\left({x(A+B)}\right) &= I + x(A+B) + \frac{1}{2} x^2 (A+B)^2 + O(x^3) \\
 & = I + x(A+B) + \frac{1}{2} x^2 (A^2 + AB + BA + B^2) + O(x^3) , \nonumber
@@ -79,16 +79,16 @@ for the right-hand side. The two equations~\eqref{eq:taylor-left} and~\eqref{eq:
 \end{equation}
 Therefore, dividing the parameter $x$ into $n$ slices, we get
 \begin{align}
-\left(\exp\left({\frac{x}{n}A}\right) \exp\left({\frac{x}{n}B}\right) \right)^n &= \left[ \exp\left({\frac{x}{n}(A + B) + \frac{1}{2}\left(\frac{x}{n}\right)^2 [A,B] + O\left(\left(\frac{x}{n}\right)^3\right)}\right) \right]^n \nonumber \\ 
+\left( \mathrm{e}^{ \left({\frac{x}{n}A}\right)} \mathrm{e}^{ \left({\frac{x}{n}B}\right)} \right)^n &= \left[ \exp\left({\frac{x}{n}(A + B) + \frac{1}{2}\left(\frac{x}{n}\right)^2 [A,B] + O\left(\left(\frac{x}{n}\right)^3\right)}\right) \right]^n \nonumber \\ 
 &= \exp\left({x(A+B) + \frac{1}{2}\left(\frac{x^2}{n}\right) [A,B] + O\left(\left(\frac{x^3}{n^2}\right)\right)}\right) \nonumber
 \end{align}
 and taking the limit $n \rightarrow \infty$ the correction term vanishes, recovering the exponential operator.
 
-It is interesting to compare this approach with another frequently used, namely the perturbational approximation:
+It is interesting to compare this approach with another frequently used one, namely the perturbational approximation:
 \begin{equation} \label{eq:roughapprox}
 \exp\left({x(A+B)}\right) = I + x(A+B) + O(x^2).
 \end{equation}
-When dealing with Hermitian Hamiltonian $H=A+B$, the Trotter--Suzuki approximation has a remarkable advantage over the Eq.~\eqref{eq:roughapprox}. Indeed, in that scenario, the evolution operator is a unitary operator; the same is not true for the right-hand side of the Eq.~\eqref{eq:roughapprox}. Contrary, the Trotter--Suzuki preservers this property since it is a product of unitary operators. As a consequence, the norm of the wave function is preserved, resulting in a better accuracy of the evolution. However, a first-order approximation could not be enough  to achieve a high precision. For these reasons it is interesting to extend the approximation, looking for higher order approximants.
+When dealing with a Hermitian Hamiltonian $H=A+B$, the Trotter--Suzuki approximation has a remarkable advantage over the Eq.~\eqref{eq:roughapprox}. Indeed, in that scenario, the evolution operator is a unitary operator; the same is not true for the right-hand side of the Eq.~\eqref{eq:roughapprox}. Contrary, the Trotter--Suzuki preservers this property since it is a product of unitary operators. As a consequence, the norm of the wave function is preserved, resulting in a better accuracy of the evolution. However, a first-order approximation could not be enough  to achieve a high precision. For these reasons it is interesting to extend the approximation, looking for higher order approximants.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Fractal Decomposition}

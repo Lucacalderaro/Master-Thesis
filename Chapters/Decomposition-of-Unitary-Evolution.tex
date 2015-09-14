@@ -1,11 +1,11 @@
 \chapter{Decomposition of Unitary Evolution}
 When it comes to solving differential equations that determine the behaviour of a physical system, an accurate approximation is often needed to find an explicit solution. As we have seen in the previous chapter, a good approach is to use the Trotter--Suzuki approximation. 
 
-In this chapter we are interested in calculating the evolution operator $U(t) = \exp \left( - \frac{\imath t}{\hbar} H \right)$, the solution of the time--dependent Schr\"odinger equation, using the second order Trotter--Suzuki approximation. The Trotter--Suzuki approximation is based on the splitting of the exponent in a sum of operators. Thus, starting from a exponential that is difficult to calculate, we end up with a product of easy--to--calculate exponentials. In the next sections, we discuss how to decompose the Hamiltonian and the eventual calculation of the exponential.
+In this chapter we are interested in calculating the evolution operator $U(t) = \exp \left( - \frac{\imath t}{\hbar} H \right)$, the solution of the time-dependent Schr\"odinger equation, using the second order Trotter--Suzuki approximation. The Trotter--Suzuki approximation is based on the splitting of the exponent in a sum of operators. Thus, starting from a exponential that is difficult to calculate, we end up with a product of easy-to-calculate exponentials. In the next sections, we discuss how to decompose the Hamiltonian and the eventual calculation of the exponential.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Hamiltonian Decomposition}
-We consider a single quantum particle in two dimensions in time--independent potential. The Hamiltonian operator of such system is written as follows
+We consider a single quantum particle in two dimensions in time-independent potential. The Hamiltonian operator of such system is written as follows
 \begin{equation} \label{eq:hamiltonian-implementation}
 \hat{H} = \frac{\hat{P}_x^2 + \hat{P}_y^2}{2m} + \hat{V},
 \end{equation}
@@ -20,7 +20,7 @@ We use the coordinate reppresentation of the operators, so the kinetic term beco
 \end{subequations}
 In this basis, the exponentiation of the external potential operator is straightforward, since it is diagonal. On the contrary, this is not true for the kinetic operator.
 
-We consider the discretization of the continuum space into a uniform mesh, where $\Delta$ is the distance between any two consecutive points. We use the tuple $(i,j)$ to label the points of the mesh, with $i,j = 1,\ldots , N$, so that $\psi(x,y) \rightarrow \psi_{i,j}$ and $\ket{x,y} \rightarrow \ket{i,j}$. Using the second--order derivative central difference, we have:
+We consider the discretization of the continuum space into a uniform mesh, where $\Delta$ is the distance between any two consecutive points. We use the tuple $(i,j)$ to label the points of the mesh, with $i,j = 1,\ldots , N$, so that $\psi(x,y) \rightarrow \psi_{i,j}$ and $\ket{x,y} \rightarrow \ket{i,j}$. Using the second-order derivative central difference, we have:
 \begin{equation} \label{eq:second-order-derivative}
 \frac{\partial^2 \psi}{\partial x^2} \bigg|_{i,j} = \frac{\psi(i+1,j) - 2 \psi(i,j) + \psi(i-1,j)}{\Delta^2} + O(\Delta^2),
 \end{equation}
@@ -83,11 +83,11 @@ For the brevity of notation, we adopt the operator notation, so that the previou
 \begin{equation} \label{eq:mom-decomposition}
 \frac{1}{2m} \left( \hat{P}_x^2 + \hat{P}_y^2 \right)= -\frac{\hbar^2}{2m\Delta^2} \left[ \hat{A}_x + \hat{B}_x + \hat{A}_y + \hat{B}_y - 4 \hat{I} \right],
 \end{equation}
-where the label indicates the index to which the operator acts, so that the following commutation rules are satisfied:
+where the label indicates the index on which the operator acts, so that the following commutation rules are satisfied:
 \begin{equation}
 [\hat{A}_x, \hat{A}_y] = 0 \quad [\hat{A}_x, \hat{B}_y] = 0 \quad [\hat{B}_x, \hat{A}_y] = 0 \quad [\hat{B}_x, \hat{B}_y] = 0.
 \end{equation} 
-Finally, by mean of Eq.~\eqref{eq:mom-decomposition}, we get the decomposition formula for the Hamiltonian~\eqref{eq:hamiltonian-implementation}:
+Finally, by Eq.~\eqref{eq:mom-decomposition}, we get the decomposition formula for the Hamiltonian~\eqref{eq:hamiltonian-implementation}:
 \begin{equation} \label{eq:hamiltonian-decomposition}
 \hat{H} = -\frac{\hbar^2}{2 m \Delta^2} \left[ \hat{A}_x + \hat{B}_x + \hat{A}_y + \hat{B}_y - 4 \hat{I} \right] + \hat{V}.
 \end{equation}
@@ -96,7 +96,7 @@ Finally, by mean of Eq.~\eqref{eq:mom-decomposition}, we get the decomposition f
 \section{Evolution Operator}
 In the previous section, we shown how to split the Hamiltonian in the discrete space approximation. Now we explicitly calculate the Trotter--Suzuki decomposition for the evolution operator. Using the Hamiltonian decomposition~\eqref{eq:hamiltonian-decomposition}, the evolution operator $\hat{U}(t) = \exp(-\frac{\imath t}{\hbar} H)$ can be written as follows, in the first Trotter--Suzuki approximation
 \begin{align} \label{eq:1approxTS}
-\hat{U}_1(t) = \exp\left(-\frac{\imath t}{\hbar}\left(\hat{V} + \frac{2 \hbar^2}{m \Delta^2} \hat{I}\right) \right) & \exp\left(\imath \alpha \hat{A}_x \right) \exp\left(\imath \alpha \hat{B}_x \right) \cdot \\ \cdot & \exp\left(\imath \alpha \hat{A}_y \right) \exp\left(\imath \alpha \hat{B}_y \right) + O(t^2) \nonumber
+\hat{U}_1(t) = \exp\left(-\frac{\imath t}{\hbar}\left(\hat{V} + \frac{2 \hbar^2}{m \Delta^2} \hat{I}\right) \right) & \exp\left(\imath \alpha \hat{A}_x \right) \exp\left(\imath \alpha \hat{B}_x \right) \cdot \\ \cdot & \exp\left(\imath \alpha \hat{A}_y \right) \exp\left(\imath \alpha \hat{B}_y \right) + O(t^2), \nonumber
 \end{align}
 where we defined $\alpha = \frac{\hbar t}{2m\Delta^2}$. 
 
@@ -109,20 +109,20 @@ it is straightforward to calculate the exponential of the operators $A$ and $B$,
 \exp\left(\imath \alpha \hat{A}_x \right) = \hat{I}_x \cos(\alpha) + \imath \sin(\alpha) \hat{A}_x
 \end{equation}
 \begin{equation} \label{eq:expB}
-\exp\left(\imath \alpha \hat{B}_x \right) = \hat{I}_x (\cos(\alpha)(1-\delta_{x,0}) + \delta_{x,0}) + \imath \sin(\alpha) \hat{B}_x
+\exp\left(\imath \alpha \hat{B}_x \right) = \hat{I}_x (\cos(\alpha)(1-\delta_{x,0}) + \delta_{x,0}) + \imath \sin(\alpha) \hat{B}_x.
 \end{equation}
 The first exponential in Eq.~\eqref{eq:1approxTS} is also straightforward to calculate. Indeed $\hat{V} \ket{i,j} = V(i,j) \ket{i,j}$ so,
 \begin{equation}
-\bra{k,l} \exp\left(-\frac{\imath t}{\hbar}\left(\hat{V} + \frac{2 \hbar^2}{m \Delta^2} \hat{I}\right) \right) \ket{i,j} = \delta_{k,i} \delta_{l,j} \exp\left( -\frac{\imath t}{\hbar} \left( V(i,j) + \frac{2 \hbar^2}{m \Delta^2} \right) \right) \nonumber
+\bra{k,l} \exp\left(-\frac{\imath t}{\hbar}\left(\hat{V} + \frac{2 \hbar^2}{m \Delta^2} \hat{I}\right) \right) \ket{i,j} = \delta_{k,i} \delta_{l,j} \exp\left( -\frac{\imath t}{\hbar} \left( V(i,j) + \frac{2 \hbar^2}{m \Delta^2} \right) \right). \nonumber
 \end{equation}
 The second order approximation of Trotter--Suzuki decomposition is easily calculated using $U_1(t)$, namely
 \begin{equation} \label{eq:second-TS-evo-operator}
-\hat{U}_2(t) = \hat{U}_1\left( -\frac{t}{2} \right)^\dagger \hat{U}_1\left(\frac{t}{2}\right)
+\hat{U}_2(t) = \hat{U}_1\left( -\frac{t}{2} \right)^\dagger \hat{U}_1\left(\frac{t}{2}\right).
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Evolution Towards the Ground-state}
-A reliable and easily--implemented method of approximating the ground state of the
+A reliable and easily-implemented method of approximating the ground state of the
 system is by propagation in imaginary time. Consider the Schr\"odinger equation
 \begin{equation}
 \imath \hbar \frac{\partial \ket{\psi(t)}}{\partial t} = \hat{H} \ket{\psi(t)}.
@@ -139,7 +139,7 @@ where $\hat{H} \ket{\phi_i} = E_i \phi_i$ for $i = 0,1,2,\ldots$~. In this basis
 \begin{equation}
 \ket{\psi(\tau)} = \sum_i c_i \exp\left( -\frac{\tau}{\hbar} E_i \right) \ket{\phi_i}.
 \end{equation}
-Taking $E_0$ as the ground--state energy, we can rearrange the previous equation
+Taking $E_0$ as the ground-state energy, we can rearrange the previous equation
 \begin{equation} \label{eq:imag-evolution}
 \ket{\psi(\tau)} = \exp \left( -\frac{\tau}{\hbar} E_0 \right) \sum_i c_i  \exp\left( -\frac{\tau}{\hbar} \Delta E_i \right) \ket{\phi_i}.
 \end{equation}
@@ -147,11 +147,11 @@ where $\Delta E_i = E_i - E_0 > 0,  \forall i > 0$. We now take the limit for $\
 \begin{equation}
 \lim_{\tau \rightarrow +\infty} \ket{\psi(\tau)} = \exp \left( -\frac{\tau}{\hbar} E_0 \right) c_0 \ket{\phi_0}.
 \end{equation}
-Thus, evolving the initial state for a sufficient amount of time, let us to reach an  approximation of the ground state.
+Thus, evolving the initial state for a sufficient amount of time, it let us reach an  approximation of the ground state.
 
 We implement the evolution operator in imaginary time using the same Trotter--Suzuki decomposition and Hamiltonian splitting as for the real time evolution. The operator reads as
 \begin{equation}
-\hat{U}(\tau) =   \exp\left(-\frac{\tau}{\hbar} \left( -\frac{\hbar^2}{2 m \Delta^2} \left[ \hat{A}_x + \hat{B}_x + \hat{A}_y + \hat{B}_y - 4 \hat{I} \right] + \hat{V} \right) \right)
+\hat{U}(\tau) =   \exp\left(-\frac{\tau}{\hbar} \left( -\frac{\hbar^2}{2 m \Delta^2} \left[ \hat{A}_x + \hat{B}_x + \hat{A}_y + \hat{B}_y - 4 \hat{I} \right] + \hat{V} \right) \right),
 \end{equation} 
 so in the first Trotter--Suzuki approximation we have
 \begin{align}
